@@ -19,7 +19,10 @@ $( document ).ready(function() {
 			 * redirect them to the home page.
 			 */
 			window.location.href = 'home/';
-		} /** Else don't do anything */
+		} else {
+			/** We are good to show the page */
+			$('body').show();
+		}
 	});
-		
+
 });

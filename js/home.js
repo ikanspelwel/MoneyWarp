@@ -21,8 +21,11 @@ $( document ).ready(function() {
 			 * We don't have an active session so lets 
 			 * redirect them to the index page.
 			 */
-			window.location.href = '../';
-		} /** Else don't do anything */
+			window.location.href = './';
+		} else {
+			/** We are good to show the page */
+			$('body').show();
+		}
 	});
 
 	//Attention.show('bob');
