@@ -15,7 +15,16 @@ $( document ).ready(function() {
 	/**
 	 * Need to check for an active session
 	 */
-	
+	Session.GetStatus(function(status) {
+		if(!status.active) {
+			/** 
+			 * We don't have an active session so lets 
+			 * redirect them to the index page.
+			 */
+			window.location.href = '../';
+		} /** Else don't do anything */
+	});
+
 	//Attention.show('bob');
 	
 	//ActiveSession();

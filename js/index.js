@@ -12,10 +12,14 @@ $( document ).ready(function() {
 	Attention = new MyAttention('Modal-Attention');
 	Session = new MySessions();
 	
-	Session.GetStatus(function(json){
-		console.log(json);
+	Session.GetStatus(function(status) {
+		if(status.active) {
+			/** 
+			 * We have an active session so lets 
+			 * redirect them to the home page.
+			 */
+			window.location.href = 'home/';
+		} /** Else don't do anything */
 	});
-	
-	//Attention.show('bob', {type: 'warning'});
-	
+		
 });

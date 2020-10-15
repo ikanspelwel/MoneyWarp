@@ -26,19 +26,19 @@ switch ( $doWhat ) {
 function checkActive($vars) {
     global $mySession, $myReturn, $errors;
     
-    // Initiate my json return class
-    $debug = new ikanspelwel\MyLog();
+//     // Initiate my json return class
+//     $debug = new ikanspelwel\MyLog();
     
-    $errors->ErrorMsg("You did something bad!!");
-    $errors->ErrorMsg("You also did something bad!!");
+//     $errors->ErrorMsg("You did something bad!!");
+//     $errors->ErrorMsg("You also did something bad!!");
     
-    if($errors->ErrorMsg()) {
-        $debug->errorLog($errors->getString());
-    }
+//     if($errors->ErrorMsg()) {
+//         $debug->errorLog($errors->getString());
+//     }
     
-    $debug->errorLog('before json');
+//     $debug->errorLog('before json');
     
     $myReturn->json( array('active' => $mySession->Active()) );
     
-    $debug->errorLog('after json');
+//     $debug->errorLog('after json');
 }
