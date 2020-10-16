@@ -78,11 +78,6 @@ class MySessions {
             setcookie('UniqueCookie', '', time() - 3600, '/', $_SERVER['HTTP_HOST'], TRUE, TRUE);
         }
         
-        /**
-         * Finally destroying this session so that it 
-         * cannot be reused.
-         */
-        session_destroy();
     }
     
     
