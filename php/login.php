@@ -28,7 +28,7 @@ try {
     list($validUser) = $userCheck->fetch(PDO::FETCH_NUM);
     
 } catch (Exception $e) {
-    mail(ADMIN_EMAIL, 'MySQL PDO Error', $e->getMessage() .' in '. __FILE__ ." on line ". __LINE__, EMAIL_FROM, '-f'. EMAIL_FROM);
+    mail(ADMIN_EMAIL, 'MySQL PDO Error', $e->getMessage() .' in '. __FILE__ ." on line ". __LINE__, FORMATED_FROM, '-f'. FROM_ADDRESS);
     exit;
 }
 
