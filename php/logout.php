@@ -12,4 +12,5 @@ $mySession = new ikanspelwel\MySessions();
  */
 $mySession->Logout();
 
+/** Redirect to the main page */
 header("Location: ../");

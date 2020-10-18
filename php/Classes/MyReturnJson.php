@@ -15,20 +15,23 @@ class MyReturnJson {
      * @param mixed $Return Data Structure to encode and return.
      */
     public function json($Return = NULL) {
-        // If the $Return var isn't set, set it.
+        /** If the $Return var isn't set, set it. */
         if($Return == NULL) {
             $Return = array();
         }
         
-        // We'll be outputting json
+        /**
+         * We will be outputting json so we need to let the
+         * browser know that via the header response.
+         */
         header("Cache-Control: no-cache, must-revalidate");
         header("Pragma: no-cache");
         header('Content-type: application/json');
         
-        // Echo/Return the json encoded var.
+        /** Echo/Return the json encoded var. */
         echo json_encode( $Return );
         
-        // and now stop execution.
+        /** Now stop execution. */
         exit;
     }
     

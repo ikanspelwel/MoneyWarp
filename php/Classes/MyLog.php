@@ -13,8 +13,8 @@ namespace ikanspelwel;
 class MyLog {
     /**
      * This function can be used to output information
-     * into the logs without disturbing the json
-     * return to the browser.
+     * into the logs without disturbing the what is displayed
+     * in the browser window. 
      *
      * @param mixed $data Data Structure to dump to logs.
      */

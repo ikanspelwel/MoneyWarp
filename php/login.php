@@ -32,11 +32,15 @@ try {
     exit;
 }
 
+/** Check if the login was successfull */
 if($user_id) {
+    /** If success login a session */
     $mySession->Login($user_id);
     
+    /** Now that we are logged in redirect to the home page */
     header('Location: ../home.html');
 } else {
     
+    /** If failure just redirecting to the login page */ 
     header('Location: ../login.html');
 }
