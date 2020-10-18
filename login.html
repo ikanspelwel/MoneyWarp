@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Money Warp</title>
+<title>Welcome to Money Warp</title>
 
 <!-- Include Bootstrap and jQuery -->
 <!-- CSS only -->
@@ -19,21 +19,28 @@
 <!-- Including my custom JavaScript -->
 <script type="text/javascript" src="js/Classes/MyAttention.js"></script>
 <script type="text/javascript" src="js/Classes/MySessions.js"></script>
-<script type="text/javascript" src="js/home.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
 
 <!-- Including my custom CSS -->
+<link rel="stylesheet" href="css/signin.css" crossorigin="anonymous">
 <link rel="stylesheet" href="css/myStyle.css" crossorigin="anonymous">
 
 </head>
-<body class="myHidden">
-
-Main Landing/Navigation Page
-
-<br/>
-<br/>
-<a onclick="Attention.show('bob');">Click Me</a>
-<br/>
-<br/>
-<a href="php/logout.php">Logout</a>
+<body class="text-center">
+	<form class="form-signin" action="php/login.php" method="post">
+		<img class="mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+		<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+		<label for="inputEmail" class="sr-only">User Name</label>
+		<input type="user" id="inputEmail" name="user_name" class="form-control" placeholder="User Name" required autofocus>
+		<label for="inputPassword" class="sr-only">Password</label>
+		<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+		<div class="checkbox mb-3">
+		  <label>
+		    <input type="checkbox" value="remember-me"> Remember me
+		  </label>
+		</div>
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+		<p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
+	</form>
 </body>
 </html>

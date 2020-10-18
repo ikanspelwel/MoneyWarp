@@ -21,7 +21,7 @@ $( document ).ready(function() {
 			 * We don't have an active session so lets 
 			 * redirect them to the index page.
 			 */
-			window.location.href = './';
+			window.location.href = 'login.html';
 		} else {
 			/** We are good to show the page */
 			$('body').show();

@@ -12,17 +12,21 @@ $( document ).ready(function() {
 	Attention = new MyAttention('Modal-Attention');
 	Session = new MySessions();
 	
-	Session.GetStatus(function(status) {
-		if(status.active) {
-			/** 
-			 * We have an active session so lets 
-			 * redirect them to the home page.
-			 */
-			window.location.href = 'home/';
-		} else {
-			/** We are good to show the page */
-			$('body').show();
-		}
-	});
+	
+//	/** We are good to show the page */
+//	$('body').show();
+
+//	Session.GetStatus(function(status) {
+//		if(status.active) {
+//			/** 
+//			 * We have an active session so lets 
+//			 * redirect them to the home page.
+//			 */
+//			window.location.href = 'home.html';
+//		} else {
+//			/** We are good to show the page */
+//			$('body').show();
+//		}
+//	});
 
 });
