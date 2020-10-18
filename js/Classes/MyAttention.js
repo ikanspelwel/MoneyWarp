@@ -46,7 +46,7 @@ function MyAttention(name) {
  * open the dialog box.
  * 
  * @param contents - What to display in the dialog box
- * @param options - Object containing various options: {type: 'generic, info, warning, error', title: 'New Title',  buttons: {}, onClose: 'function(), Logout, Disabled', beforeOnClose: function(), doNotHideWaiting: true/false}
+ * @param options - Object containing various options: {type: 'generic, info, warning, error', title: 'New Title',  buttons: {}, onClose: 'function(), Logout, Disabled', beforeOnClose: function()}
  * @returns
  */
 MyAttention.prototype.show = function (contents, options) {
@@ -56,7 +56,7 @@ MyAttention.prototype.show = function (contents, options) {
 	if( options.type == 'generic') {
 		// If type is generic 
 		$('#'+ this.name +'-div').removeClass('ui-state-error ui-state-highlight').html(''); // Removing the old
-		$('#'+ this.name).dialog( 'option', 'title', (options.title ? options.title : 'Applications') );
+		$('#'+ this.name).dialog( 'option', 'title', (options.title ? options.title : 'Money Warp') );
 	} else {
 		// Else it is a normal info/warning/error dialog box
 		$('#'+ this.name +'-div').removeClass('ui-state-error ui-state-highlight').html(
@@ -112,12 +112,6 @@ MyAttention.prototype.show = function (contents, options) {
 		// Allow the dialog box to be closed. 
 		$('#'+ this.name).off( "dialogbeforeclose" );
 	}
-
-//	if(!options.doNotHideWaiting){
-//		// Hide the waiting logo
-//		Wait(false);
-	//TODO either do this or get rid of it.
-//	}
 
 	// Displaying the Dialog box
 	$('#'+ this.name).dialog('open');
