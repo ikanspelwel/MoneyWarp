@@ -22,18 +22,36 @@
 <script type="text/javascript" src="js/home.js"></script>
 
 <!-- Including my custom CSS -->
+<link rel="stylesheet" href="css/cover.css" crossorigin="anonymous">
 <link rel="stylesheet" href="css/myStyle.css" crossorigin="anonymous">
 
 </head>
-<body class="myHidden">
+<body class="text-center myHidden">
+	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+		<header class="masthead mb-auto">
+			<div class="inner">
+				<h3 class="masthead-brand">Money Warp</h3>
+				<nav class="nav nav-masthead justify-content-center">
+					<a class="nav-link" href="../">Info</a>
+					<a class="nav-link active" href="home.html">Home</a>
+					<a class="nav-link" href="php/logout.php">Logout</a>
+				</nav>
+			</div>
+		</header>
 
-Main Landing/Navigation Page
+		<main role="main" class="inner cover">
+		<h1 class="cover-heading">Main Application Landing Page...</h1>
+		<p class="lead">Future stuff would be here... <a onclick="Attention.show('bob');">Alert Test</a></p>
+		</main>
 
-<br/>
-<br/>
-<a onclick="Attention.show('bob');">Click Me</a>
-<br/>
-<br/>
-<a href="php/logout.php">Logout</a>
+		<footer class="mastfoot mt-auto">
+			<div class="inner">
+				<p>
+					Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>,
+					by <a href="https://twitter.com/mdo">@mdo</a>.
+				</p>
+			</div>
+		</footer>
+	</div>
 </body>
 </html>
