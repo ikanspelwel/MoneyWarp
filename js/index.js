@@ -12,6 +12,7 @@ $( document ).ready(function() {
 	Attention = new MyAttention('Modal-Attention');
 	Session = new MySessions();
 	
+	/** Go and get the session status. */
 	Session.GetStatus(function(status) {
 		if(status.active) {
 			/** 
@@ -23,6 +24,9 @@ $( document ).ready(function() {
 			$('#home').show();
 			$('#logout').show();
 		}
+		
+		/** We are now good to show the page */
+		$('body').show();
 	});
 
 });
