@@ -23,13 +23,8 @@ $( document ).ready(function() {
 			 */
 			window.location.href = 'login.html';
 		} else {
-			/** We are good to show the page */
+			/** Else we are good to show the page */
 			$('body').show();
 		}
 	});
-
-	//Attention.show('bob');
-	
-	//ActiveSession();
-	
 });
