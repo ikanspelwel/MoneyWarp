@@ -49,7 +49,7 @@ class MyDatabase {
 	
 
 	/**
-	 * @return the $dbh
+	 * @return the database handel
 	 */
 	public function get_dbh() {
 		return $this->dbh;
