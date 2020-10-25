@@ -27,9 +27,8 @@ function MyAttention(name) {
 		autoOpen : false,
 		modal : true,
 		open: function() {
-			// Maintaining the Modal Box
-			//MaintainingModalBox(500);
-			//TODO either do this above or get rid of it.
+			/** Setting/Maintaining the width of the Modal Box */
+			
 		}
 	}); // end of new dialog box
 
@@ -50,15 +49,15 @@ function MyAttention(name) {
  * @returns
  */
 MyAttention.prototype.show = function (contents, options) {
-	// If no options were supplied create an empty object.
+	/** If no options were supplied create an empty object. */
 	if(!options) var options = new Object;
 
 	if( options.type == 'generic') {
-		// If type is generic 
+		/** If type is generic */
 		$('#'+ this.name +'-div').removeClass('ui-state-error ui-state-highlight').html(''); // Removing the old
 		$('#'+ this.name).dialog( 'option', 'title', (options.title ? options.title : 'Money Warp') );
 	} else {
-		// Else it is a normal info/warning/error dialog box
+		/** Else it is a normal info/warning/error dialog box */
 		$('#'+ this.name +'-div').removeClass('ui-state-error ui-state-highlight').html(
 			$('<div>').attr('id', this.name +'-icon').addClass('ui-icon')
 		);
@@ -79,13 +78,13 @@ MyAttention.prototype.show = function (contents, options) {
 		}
 	}
 	
-	// Adding the mesage
+	/** Adding the contents */
 	$('#'+ this.name +'-div').append(contents);
 	
-	// Adding any buttons
+	/** Adding the button(s) */
 	$('#'+ this.name).dialog( "option", "buttons", (options.buttons ? options.buttons : { "Close": function() { $(this).dialog('close'); } } ) );
 
-	// Binding onClose function
+	/** Binding onClose function */
 	if(typeof options.onClose === "function") {
 		$('#'+ this.name).on( "dialogclose", function( event, ui ) {
 			$('#'+ this.name).off( "dialogclose" );
@@ -94,25 +93,48 @@ MyAttention.prototype.show = function (contents, options) {
 	} else if(options.onClose == 'Logout') {
 		$('#'+ this.name).on( "dialogclose", function( event, ui ) {
 			$('#'+ this.name).off( "dialogclose" );
-			window.location.href = '/PHP/Logout.php';
+			window.location.href = '/php/logout.php';
 		});
 	} else if(typeof options.beforeOnClose === 'function') {
 		$('#'+ this.name).on( "dialogbeforeclose", function() {
 			return options.beforeOnClose();
 		});
 	} else if(options.onClose == 'Disabled') {
-		// Make the window uncloseable. 
+		/** Make the window uncloseable. */
 		$('#'+ this.name).on( "dialogbeforeclose", function() {
 			return false;
 		});
 	} else {
-		// Remove any attached events.
+		/** Remove any attached events. */
 		$('#'+ this.name).off( "dialogclose" );
 
-		// Allow the dialog box to be closed. 
+		/** Allow the dialog box to be closed. */ 
 		$('#'+ this.name).off( "dialogbeforeclose" );
 	}
 
-	// Displaying the Dialog box
+	/** Displaying the Dialog box */
 	$('#'+ this.name).dialog('open');
+	
+	/** Fixing the width of the dialog box */
+	this.SetWidth(500);
+}
+
+
+/*
+ * Maintaining the Modal Box sizing
+ */
+MyAttention.prototype.SetWidth = function (maxWidth) {
+	var availWidth = $(window).width() - 40; /** 40 for 20px margin on each side. */
+
+	maxWidth = (maxWidth === undefined ? availWidth : (availWidth > maxWidth ? maxWidth : availWidth) );
+	
+	
+	$('#'+ this.name).dialog( "option", "position", { my: "left top", at: "left top", of: window, within: window } );
+	$('#'+ this.name).dialog( "option", "width", 'auto' );
+
+	$('#'+ this.name).css("max-width", (maxWidth === undefined ? 'none' : maxWidth) );
+	
+	$('#'+ this.name).dialog( "option", "height", 'auto' );
+	$('#'+ this.name).dialog( "option", "position", { my: "center top", at: "center top", of: window, within: window } );
+
 }
