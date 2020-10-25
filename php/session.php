@@ -4,13 +4,13 @@
  */
 require_once 'includePHP.php';
 
-// Initiate my session class
+/** Initiate the Sessions class */
 $mySession = new ikanspelwel\MySessions();
 
-// Initiate my json return class
+/** Initiate my json return class */
 $myReturn = new ikanspelwel\MyReturnJson();
 
-// Initiate my error message class
+/** Initiate my error message class */
 $errors = new ikanspelwel\MyErrorMsg();
 
 $doWhat = (array_key_exists('doWhat', $_REQUEST) ? $_REQUEST['doWhat'] : NULL);
