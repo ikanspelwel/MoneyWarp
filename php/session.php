@@ -10,35 +10,23 @@ $mySession = new ikanspelwel\MySessions();
 /** Initiate my json return class */
 $myReturn = new ikanspelwel\MyReturnJson();
 
-/** Initiate my error message class */
-$errors = new ikanspelwel\MyErrorMsg();
-
+/** Sterilizing the doWhat var, setting to null if it doesn't exist */
 $doWhat = (array_key_exists('doWhat', $_REQUEST) ? $_REQUEST['doWhat'] : NULL);
 
+/** Deciding what to do based on the doWhat var */
 switch ( $doWhat ) {
     case 'checkActive':
         checkActive($_REQUEST);
         break;
     default:
-        echo 'Unknown!';
+        /** If an action couldn't be found, toss an exception message. */
+        throw new Exception('Unknown/Invalid option!');
 }
 
 function checkActive($vars) {
-    global $mySession, $myReturn, $errors;
+    /** Making my global var accessible to this function */
+    global $mySession, $myReturn;
     
-//     // Initiate my json return class
-//     $debug = new ikanspelwel\MyLog();
-    
-//     $errors->ErrorMsg("You did something bad!!");
-//     $errors->ErrorMsg("You also did something bad!!");
-    
-//     if($errors->ErrorMsg()) {
-//         $debug->errorLog($errors->getString());
-//     }
-    
-//     $debug->errorLog('before json');
-    
+    /** Returning via json if there is an active session or not */    
     $myReturn->json( array('active' => $mySession->Active()) );
-    
-//     $debug->errorLog('after json');
 }
