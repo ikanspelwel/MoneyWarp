@@ -20,9 +20,7 @@ $( document ).ready(function() {
 			 * the login item and show the home and
 			 * logout items. 
 			 */
-			$('#login').hide();
-			$('#home').show();
-			$('#logout').show();
+			$('#logout').removeClass('invisible');
 		}
 		
 		/** We are now good to show the page */
