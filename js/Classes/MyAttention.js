@@ -25,11 +25,7 @@ function MyAttention(name) {
 	 */
 	$('#'+ this.name).dialog({
 		autoOpen : false,
-		modal : true,
-		open: function() {
-			/** Setting/Maintaining the width of the Modal Box */
-			
-		}
+		modal : true
 	}); // end of new dialog box
 
 }
