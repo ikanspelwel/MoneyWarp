@@ -22,7 +22,8 @@
 <script type="text/javascript" src="js/index.js"></script>
 
 <!-- Including my custom CSS -->
-<link rel="stylesheet" href="css/myStyle.css" crossorigin="anonymous">
+<link rel="stylesheet" href="css/baseStyle.css">
+<link rel="stylesheet" href="css/myStyle.css">
 
 <style type="text/css">
 body {
@@ -36,7 +37,7 @@ body {
 	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 		<header class="masthead mb-auto">
 			<div class="inner">
-				<h3 class="masthead-brand">Money Warp</h3>
+				<h2 class="masthead-brand">Money Warp</h2>
 				<nav class="nav nav-masthead justify-content-center">
 					<a class="nav-link active" href="../">Home</a>
 					<a class="nav-link" href="information.html">Info</a>
@@ -56,11 +57,24 @@ body {
 			</form>
 		</main>
 
-		<main id="homeDiv" role="main" class="inner cover myHidden">
-			<h1 class="cover-heading">Main Application Landing Page...</h1>
-			<p class="lead">Future stuff would be here... <a onclick="Attention.show('bob');">Alert Test</a></p>
-		</main>
-
+		<div id="homeDiv" class="myHidden container">
+			<div class="row">
+			  <div class="col-sm-6 col-md-6">
+			    <div class="card home">
+			      <div class="card-body">
+			        <h3 class="card-title"><a href="warp.html">Warp My Accounts</a></h3>
+			      </div>
+			    </div>
+			  </div>
+			  <div class="col-sm-6 col-md-6">
+			    <div class="card home">
+			      <div class="card-body">
+			        <h3 class="card-title"><a href="register.html">Account Register</a></h3>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</div>
 		<footer class="mastfoot mt-auto">
 			<div class="inner">
 				<p>
