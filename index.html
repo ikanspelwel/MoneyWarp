@@ -40,14 +40,14 @@ body {
 				<nav class="nav nav-masthead justify-content-center">
 					<a class="nav-link active" href="../">Home</a>
 					<a class="nav-link" href="info.html">Info</a>
-					<a id="logout" class="nav-link myHidden" href="php/logout.php">Logout</a>
+					<a id="logout" class="nav-link invisible" href="php/logout.php">Logout</a>
 				</nav>
 			</div>
 		</header>
 
 		<main id="loginDiv" role="main" class="inner cover text-center myHidden">
-			<form class="form-signin" action="php/login.php" method="post">
-				<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+			<form id="loginForm" class="form-signin">
+				<h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
 				<label for="user_name" class="sr-only">User Name</label>
 				<input type="user" id="user_name" name="user_name" class="form-control" placeholder="User Name" required autofocus>
 				<label for="password" class="sr-only">Password</label>
