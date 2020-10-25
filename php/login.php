@@ -34,6 +34,7 @@ try {
 } catch (Exception $e) {
     /** If any exception occurred report it */
     mail(ADMIN_EMAIL, 'MySQL PDO Error', $e->getMessage() .' in '. __FILE__ ." on line ". __LINE__, FORMATED_FROM, '-f'. FROM_ADDRESS);
+    $myReturn->json( array('error' => "A system error has occurred, please refresh and try again. If this error persists please report it.") );
     exit;
 }
 
