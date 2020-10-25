@@ -11,22 +11,27 @@ var Session; 	// Global placeholder for our Session Class
 $( document ).ready(function() {
 	Attention = new MyAttention('Modal-Attention');
 	Session = new MySessions();
-	
-	/** Go and get the session status. */
+
+	/**
+	 * Need to check for an active session
+	 */
 	Session.GetStatus(function(status) {
-		if(status.active) {
+		if(!status.active) {
 			/** 
-			 * If we have an active session lets hide
-			 * the login item and show the home and
-			 * logout items. 
+			 * We don't have an active session so lets 
+			 * show the login box.
 			 */
-			$('#login').hide();
-			$('#home').show();
+			$('#loginDiv').show();
+		} else {
+			/** 
+			 * Else they are logged in so lets show
+			 * the main home page and the logout button
+			 */
+			$('#homeDiv').show();
 			$('#logout').show();
 		}
-		
-		/** We are now good to show the page */
+
+		/** Now we can show the main body. */
 		$('body').show();
 	});
-
 });

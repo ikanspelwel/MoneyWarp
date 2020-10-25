@@ -38,9 +38,9 @@ if($user_id) {
     $mySession->Login($user_id);
     
     /** Now that we are logged in redirect to the home page */
-    header('Location: ../home.html');
+    header('Location: ../');
 } else {
     
     /** If failure just redirecting to the login page */ 
-    header('Location: ../login.html');
+    header('Location: ../');
 }
