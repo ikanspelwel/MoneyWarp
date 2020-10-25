@@ -14,12 +14,12 @@ function MySessions() {
  */
 MySessions.prototype.GetStatus = function (sucessCallback, failCallback) {
 	
-	$.ajax({ // Generic ajax Call
+	$.ajax({
 		url: 'php/session.php',
 		type: 'POST',
 		cache: 'false',
 		data: {
-			doWhat: 'checkActive',
+			doWhat: 'checkActive'
 		}
 	})
 	.fail(function(jqXHR, textStatus, errorThrown) {
