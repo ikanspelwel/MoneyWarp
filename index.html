@@ -22,67 +22,47 @@
 <script type="text/javascript" src="js/index.js"></script>
 
 <!-- Including my custom CSS -->
-<link rel="stylesheet" href="css/baseStyle.css">
 <link rel="stylesheet" href="css/myStyle.css">
-
-<style type="text/css">
-body {
-	background-image: url("images/speedpic.jpg");
-	background-size: cover;
-}
-</style>
 
 </head>
 <body class="myHidden">
-	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-		<header class="masthead mb-auto">
-			<div class="inner">
-				<h2 class="masthead-brand">Money Warp</h2>
-				<nav class="nav nav-masthead justify-content-center">
-					<a class="nav-link active" href="../">Home</a>
-					<a class="nav-link" href="information.html">Info</a>
-					<a id="logout" class="nav-link invisible" href="php/logout.php">Logout</a>
-				</nav>
-			</div>
-		</header>
-
-		<main id="loginDiv" role="main" class="inner cover text-center myHidden">
-			<form id="loginForm" class="form-signin">
-				<h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
-				<label for="user_name" class="sr-only">User Name</label>
-				<input type="user" id="user_name" name="user_name" class="form-control" placeholder="User Name" required autofocus>
-				<label for="password" class="sr-only">Password</label>
-				<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-			</form>
-		</main>
-
-		<div id="homeDiv" class="myHidden container">
-			<div class="row">
-			  <div class="col-sm-6 col-md-6">
-			    <div class="card home">
-			      <div class="card-body">
-			        <h3 class="card-title"><a href="warp.html">Warp My Accounts</a></h3>
-			      </div>
-			    </div>
-			  </div>
-			  <div class="col-sm-6 col-md-6">
-			    <div class="card home">
-			      <div class="card-body">
-			        <h3 class="card-title"><a href="register.html">Account Register</a></h3>
-			      </div>
-			    </div>
-			  </div>
-			</div>
-		</div>
-		<footer class="mastfoot mt-auto">
-			<div class="inner">
-				<p>
-					Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>,
-					by <a href="https://twitter.com/mdo">@mdo</a>.
-				</p>
-			</div>
-		</footer>
+<div class="nav-bar">
+	<div><h2>Money Warp</h2></div>
+	<div class="justify-content-center">
+		<a class="nav-link active" href="../">Home</a>
+		<a class="nav-link" href="information.html">Info</a>
+		<a id="logout" class="nav-link invisible" href="php/logout.php">Logout</a>
 	</div>
+</div>
+<div>
+<div id="loginDiv" class="card text-center myHidden">
+	<form id="loginForm" class="form-signin">
+		<h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
+		<label for="user_name" class="sr-only">User Name</label>
+		<input type="user" id="user_name" name="user_name" class="form-control" placeholder="User Name" required autofocus>
+		<label for="password" class="sr-only">Password</label>
+		<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+	</form>
+</div>
+<div id="homeDiv" class="myHidden container">
+	<div class="row">
+	  <div class="col-sm-6 col-md-6">
+	    <div class="card home">
+	      <div class="card-body">
+	        <h3 class="card-title"><a href="warp.html">Warp My Accounts</a></h3>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-sm-6 col-md-6">
+	    <div class="card home">
+	      <div class="card-body">
+	        <h3 class="card-title"><a href="register.html">Account Register</a></h3>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>
+</div>
 </body>
 </html>

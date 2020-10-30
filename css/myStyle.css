@@ -4,6 +4,25 @@
 html, body {
 	height: 100%;
 	background-color: #333;
+	color: #fff;
+}
+
+body {
+	background-image: url("../images/speedpic.jpg");
+	background-size: cover;
+}
+
+/* All Links start off white */
+a, a:focus, a:hover {
+	color: #fff;
+}
+
+/* Custom default button */
+.btn-secondary, .btn-secondary:hover, .btn-secondary:focus {
+	color: #333;
+	text-shadow: none; /* Prevent inheritance from `body` */
+	background-color: #fff;
+	border: .05rem solid #fff;
 }
 
 .nav-bar {
@@ -29,7 +48,7 @@ html, body {
 	display: inline-block;
 }
 
-.nav-link:hover, .nav-link:focus {
+a:hover, a:focus {
 	border-bottom-color: rgba(255, 255, 255, .25);
 	color: #fff;
 }
@@ -57,7 +76,7 @@ html, body {
 	margin-right: 2px;
 }
 
-[role=main], .card {
+.card {
 	background-color: rgba(42, 57, 75, 0.75);
 	border-radius: .5rem!important;
 	margin: auto;
@@ -72,4 +91,41 @@ html, body {
 
 .col-sm-6 {
 	padding-bottom: 15px;
+}
+
+.form-signin {
+	width: 100%;
+	max-width: 330px;
+	padding: 15px;
+	margin: auto;
+	padding: 40px 15px;
+}
+
+
+.form-signin .checkbox {
+	font-weight: 400;
+}
+
+.form-signin .form-control {
+	position: relative;
+	box-sizing: border-box;
+	height: auto;
+	font-size: 16px;
+}
+
+.form-signin .form-control:focus {
+	z-index: 2;
+}
+
+.form-signin input[type="user"] {
+	margin-bottom: -1px;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+	margin-top: 20px;
+}
+
+.form-signin input[type="password"] {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	margin-bottom: 20px;
 }
