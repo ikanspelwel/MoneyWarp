@@ -18,6 +18,9 @@ switch ( $doWhat ) {
     case 'checkActive':
         checkActive($_REQUEST);
         break;
+    case 'logOut':
+        logOut($_REQUEST);
+        break;
     default:
         /** If an action couldn't be found, toss an exception message. */
         throw new Exception('Unknown/Invalid option!');
@@ -29,4 +32,12 @@ function checkActive($vars) {
     
     /** Returning via json if there is an active session or not */    
     $myReturn->json( array('active' => $mySession->Active()) );
+}
+
+function logOut($vars) {
+    /** Making my global var accessible to this function */
+    global $mySession, $myReturn;
+    
+    /** Returning via json if there is an active session or not */
+    $mySession->Logout();
 }

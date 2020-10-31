@@ -13,20 +13,8 @@ $( document ).ready(function() {
 	Session = new MySessions();
 	
 	/**
-	 * Need to check for an active session
+	 * Need to Log out the session
 	 */
-	Session.GetStatus(function(status) {
-		if(status.active) {
-			/** 
-			 * If we have an active session lets hide
-			 * the login item and show the home and
-			 * logout items. 
-			 */
-			$('#logout').removeClass('invisible');
-		}
-		
-		/** We are now good to show the page */
-		$('body').show();
-	});
+	Session.LogOut();
 
 });

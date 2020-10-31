@@ -34,6 +34,21 @@ MySessions.prototype.GetStatus = function (sucessCallback, failCallback) {
 	.done(function(json) {
 		/** Upon successful ajax call run the provided sucessCallback */
 		sucessCallback( json );
-	})
+	});
 
+}
+
+MySessions.prototype.LogOut = function () {
+	$.ajax({
+		url: 'php/session.php',
+		type: 'POST',
+		cache: 'false',
+		data: {
+			doWhat: 'logOut'
+		}
+	})
+	.fail(function(jqXHR, textStatus, errorThrown) {
+		/** If there wasn't a functoin provided just show a standard error */
+		alert('A system error has occurred, please refresh and try again. If this error persists please report it.');
+	});
 }

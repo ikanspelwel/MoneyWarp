@@ -89,7 +89,7 @@ MyAttention.prototype.show = function (contents, options) {
 	} else if(options.onClose == 'Logout') {
 		$('#'+ this.name).on( "dialogclose", function( event, ui ) {
 			$('#'+ this.name).off( "dialogclose" );
-			window.location.href = '/php/logout.php';
+			window.location.href = '../../logout.html';
 		});
 	} else if(typeof options.beforeOnClose === 'function') {
 		$('#'+ this.name).on( "dialogbeforeclose", function() {
