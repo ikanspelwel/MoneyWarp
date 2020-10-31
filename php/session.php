@@ -26,6 +26,13 @@ switch ( $doWhat ) {
         throw new Exception('Unknown/Invalid option!');
 }
 
+/**
+ * Function to return if there is an active session or not.
+ * It will be returned via json so that javascript can
+ * easially parse it.
+ * 
+ * @param array $vars passing the $_REQUEST vars in
+ */
 function checkActive($vars) {
     /** Making my global var accessible to this function */
     global $mySession, $myReturn;
@@ -34,9 +41,14 @@ function checkActive($vars) {
     $myReturn->json( array('active' => $mySession->Active()) );
 }
 
+/**
+ * Function to log out a session.
+ *
+ * @param array $vars passing the $_REQUEST vars in
+ */
 function logOut($vars) {
     /** Making my global var accessible to this function */
-    global $mySession, $myReturn;
+    global $mySession;
     
     /** Returning via json if there is an active session or not */
     $mySession->Logout();
