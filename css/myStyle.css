@@ -17,6 +17,10 @@ a, a:focus, a:hover {
 	color: #fff;
 }
 
+.ui-widget {
+	font-size: inherit;
+}
+
 /* Custom default button */
 .btn-secondary, .btn-secondary:hover, .btn-secondary:focus {
 	color: #333;
