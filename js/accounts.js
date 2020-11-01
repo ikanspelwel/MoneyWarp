@@ -18,10 +18,13 @@ $( document ).ready(function() {
 	Session.GetStatus(function(status) {
 		if(!status.active) {
 			/** 
-			 * We don't have an active session so lets 
-			 * redirect them to the index page.
+			 * There isn't an active session so lets
+			 * tell them that and redirect them to the
+			 * index page.
 			 */
-			window.location.href = './';
+			$('body').show();
+			Attention.show( 'Your session has expired, please log back in.', {onClose: 'Logout'} );
+			return;
 		} else {
 			/**
 			 * They are logged in so we can
