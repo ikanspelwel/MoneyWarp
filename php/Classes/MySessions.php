@@ -26,9 +26,9 @@ class MySessions {
      * this should only be called after the user has
      * been validated by other means.
      * 
-     * @param int $userId
+     * @param int $user_id
      */
-    public function Login($userId) {
+    public function Login($user_id) {
         /**
          * When first loging in we will getting a new session ID
          * to prevent Session Fixation.
@@ -40,7 +40,7 @@ class MySessions {
          * primary means of associating everything 
          * within this application.
          */
-        $_SESSION['userId'] = $userId;        
+        $_SESSION['user_id'] = $user_id;        
         
         /**
          * Generating and storing a new random value, that we can 
@@ -95,8 +95,8 @@ class MySessions {
      */
     public function Active() {
         
-        if(array_key_exists('userId', $_SESSION) && $_SESSION['userId']) {
-            //TODO verify the userid exists in the database
+        if(array_key_exists('user_id', $_SESSION) && $_SESSION['user_id']) {
+            //TODO verify the user_id exists in the database
         } else {
             // Return invalid session
             return FALSE;

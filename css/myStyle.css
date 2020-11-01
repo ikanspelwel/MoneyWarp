@@ -84,6 +84,50 @@ a:hover, a:focus {
 	margin-right: 2px;
 }
 
+.mytable > div {
+	display: table;
+	width: 100%;
+}
+
+.mytable > div > div {
+	display: table-row;
+}
+
+/** Even Rows have a different shade */
+.mytable > div > div:nth-child(even) {
+	background-color: rgba(70, 65, 90, 0.75);
+}
+
+/** Adding some padding to each table cell */
+.mytable > div > div > div {
+	display: table-cell;
+	padding: 5px;
+}
+
+/** Curving the start of each row */
+.mytable > div > div > div:FIRST-CHILD {
+	border-top-left-radius: .5rem!important;
+	border-bottom-left-radius: .5rem!important;
+}
+
+/** Curving the end of each row */
+.mytable > div > div > div:LAST-CHILD {
+	border-top-right-radius: .5rem!important;
+	border-bottom-right-radius: .5rem!important;
+}
+
+.mytable > div > div > div:LAST-CHILD {
+	width: 20px;
+	text-align: center;
+}
+
+/* Don't wrap the titles */
+.mytable > div > div:FIRST-CHILD {
+	white-space: nowrap;
+}
+
+
+
 .card {
 	background-color: rgba(42, 57, 75, 0.9);
 	border-radius: .5rem!important;
@@ -96,6 +140,15 @@ a:hover, a:focus {
 .card.home {
 	padding: 5px;
 	text-align: center;
+}
+
+.card.full {
+	max-width: none;
+	margin: 15px;
+}
+
+.block > div {
+	display: inline-block;
 }
 
 .col-sm-6 {
