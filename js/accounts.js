@@ -9,9 +9,12 @@ var Session; 	// Global placeholder for our Session Class
  * after the DOM has been loaded
  */
 $( document ).ready(function() {
+	Wait = new MySpinner('MySpinner');
 	Attention = new MyAttention('Modal-Attention');
 	Session = new MySessions();
 
+	Wait.show();
+	
 	/**
 	 * Need to check for an active session
 	 */
@@ -22,7 +25,13 @@ $( document ).ready(function() {
 			 * tell them that and redirect them to the
 			 * index page.
 			 */
+			
+			/** Show the main body */
 			$('body').show();
+			
+			/** Hide the spinning wheel */
+			Wait.hide();
+			
 			Attention.show( 'Your session has expired, please log back in.', {onClose: 'Logout'} );
 			return;
 		} else {
@@ -30,6 +39,8 @@ $( document ).ready(function() {
 			 * They are logged in so we can
 			 * now show the main body.
 			 */
+			
+			/** Show the main body */
 			$('body').show();
 			
 			/** Populate the list of accounts */
@@ -37,8 +48,7 @@ $( document ).ready(function() {
 		}
 	});
 	
-	
-	
+
 });
 
 
@@ -89,19 +99,20 @@ function LoadAccounts() {
 						$('<div>').addClass('text-center').html(
 							$('<i>').addClass('fa').addClass(
 								(data.active ? 'fa-check-square-o' : 'fa-times-circle')
-							)
+							).on('click', function() { Wait.show(); })
 						),
-						$('<div>').html($('<i>').addClass('fa fa-pencil-square-o'))
+						$('<div>').html($('<i>').addClass('fa fa-pencil-square-o').on('click', function() { Wait.hide(); }) )
 					)
 				);
 			}); /** End of jQuery.each */
 			
 		} /** End of if there were elements in the data array */
 
-		/**
-		 * Now showing the list of accounts...
-		 */
+		/** Now showing the list of accounts...	 */
 		$('#AccountList').show();
+		
+		/** Hide the spinning wheel */
+		Wait.hide();
 		
 	})
 

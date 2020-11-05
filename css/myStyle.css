@@ -17,7 +17,32 @@ a, a:focus, a:hover {
 	color: #fff;
 }
 
+/*
+ * Spinner styling
+ */
+.spinner-logo {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	width: 64px;
+	height: 64px;
+}
+
+.spinner-background {
+	width: 86px;
+	height: 86px;
+	position: absolute;
+	border-radius: 1rem!important;
+	background: #fff;
+}
+
+.ui-widget-shadow.spinner-background {
+	box-shadow: 4px 4px 4px #aaa;
+}
+/* Done Spinner */
+
 .ui-widget {
+	font-family: inherit;
 	font-size: inherit;
 }
 
