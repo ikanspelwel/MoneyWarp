@@ -17,6 +17,16 @@ a, a:focus, a:hover {
 	color: #fff;
 }
 
+#AccountList .fa-plus-circle {
+	float: right;
+	cursor: pointer;
+	padding-right: 8px;
+}
+
+#AccountList .fa-pencil-square-o {
+	cursor: pointer;
+}
+
 /*
  * Spinner styling
  */
