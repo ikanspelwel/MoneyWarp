@@ -1,8 +1,9 @@
 /**
  * Variables for this page
  */
-var Attention; 	// Global placeholder for our Attention Class
-var Session; 	// Global placeholder for our Session Class
+var Attention; 	// Global placeholder for the Attention Class
+var Session; 	// Global placeholder for the Session Class
+var Wait; 		// Global placeholder for the MySpinner Class
 
 /**
  * The below function will only run
@@ -44,13 +45,13 @@ $( document ).ready(function() {
 			 */
 			
 			/** Turn the Add/Edit into a Pop Up */
-			$('#AccountManagement').dialog({
+			$('#AddUpdate').dialog({
 				autoOpen: false
 			}); // end of new dialog box
 
 			
 			/** Bind the Add icon */
-			$('#AccountList .fa-plus-circle').on('click', function() {
+			$('#List .fa-plus-circle').on('click', function() {
 				DisplayAddEdit();
 			});
 			
@@ -98,7 +99,7 @@ function ShowAccounts() {
 		/** Else no errors proceed */
 		if(json.data.length == 0) {
 			/** If there aren't elements in the return array */
-			$('#AccountList > div.mytable').html('None...');
+			$('#List > div.mytable').html('None...');
 		} else {
 			/** If there are elements in the return array */
 			
@@ -125,7 +126,7 @@ function ShowAccounts() {
 		} /** End of if there were elements in the data array */
 
 		/** Now showing the list of accounts...	 */
-		$('#AccountList').show();
+		$('#List').show();
 		
 		/** Hide the spinning wheel */
 		Wait.hide();
@@ -159,16 +160,16 @@ function DisplayAddEdit(account_id) {
 		$('#active').val('1');
 		
 		/** Set the dialog box title */
-		$('#AccountManagement').dialog( "option", "title", "Add Account" );
+		$('#AddUpdate').dialog( "option", "title", "Add Account" );
 		
 		/** Set the dialog buttons */
-		$('#AccountManagement').dialog( "option", "buttons", {
+		$('#AddUpdate').dialog( "option", "buttons", {
 			"Add": function() { DoAddUpdate(); },
 			"Cancel": function() { $(this).dialog('close'); }
 		});
 		
 		/** Now show the Dialog Box */
-		$('#AccountManagement').dialog('open');
+		$('#AddUpdate').dialog('open');
 		
 	} else {
 		/**
@@ -216,16 +217,16 @@ function DisplayAddEdit(account_id) {
 				$('#active').val(json.data.active);
 
 				/** Set the dialog box title */
-				$('#AccountManagement').dialog( "option", "title", "Update Account" );
+				$('#AddUpdate').dialog( "option", "title", "Update Account" );
 				
 				/** Set the dialog buttons */
-				$('#AccountManagement').dialog( "option", "buttons", {
+				$('#AddUpdate').dialog( "option", "buttons", {
 					"Update": function() { DoAddUpdate(account_id) },
 					"Cancel": function() { $(this).dialog('close'); }
 				});
 
 				/** Now show the Dialog Box */
-				$('#AccountManagement').dialog('open');
+				$('#AddUpdate').dialog('open');
 				
 			} /** End of if there were elements in the data array */
 
