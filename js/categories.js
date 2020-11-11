@@ -1,9 +1,9 @@
 /**
  * Variables for this page
  */
-var Attention; 	// Global placeholder for the Attention Class
-var Session; 	// Global placeholder for the Session Class
-var Wait; 		// Global placeholder for the MySpinner Class
+var Attention;	// Global placeholder for the Attention Class
+var Session;	// Global placeholder for the Session Class
+var Wait;		// Global placeholder for the MySpinner Class
 
 /**
  * The below function will only run

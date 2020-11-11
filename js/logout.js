@@ -1,7 +1,7 @@
 /**
  * Variables for this page
  */
-var Session; 	// Global placeholder for our Session Class
+var Session;	// Global placeholder for our Session Class
 
 /**
  * The below function will only run

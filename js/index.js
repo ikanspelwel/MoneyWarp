@@ -1,8 +1,8 @@
 /**
  * Variables for this page
  */
-var Attention; 	// Global placeholder for our Attention Class
-var Session; 	// Global placeholder for our Session Class
+var Attention;	// Global placeholder for our Attention Class
+var Session;	// Global placeholder for our Session Class
 
 /**
  * The below function will only run
