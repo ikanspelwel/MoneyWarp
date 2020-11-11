@@ -4,7 +4,7 @@
  * for dispalying the waiting box.
  */
 function MySpinner(name) {
-	// Storing the ID name for this class
+	/** Storing the ID name for this class */
 	this.name = name;
 	
 	/**
@@ -27,22 +27,21 @@ function MySpinner(name) {
  * This function will show the spinner
  */
 MySpinner.prototype.show = function () {
-	//$('#'+ this.name).children().css('zIndex', 1000 );
-//	$('.spinner-background').css('zIndex', 1000 );
-//	$('.spinner-logo').css('zIndex', 10000 );
-	
+	/** Geting the Window Height and Width */
 	var Height = $(window).height();
 	var Width = $(window).width();
 	
-	// Centering the Waiting Icon:
+	/** Centering the Waiting Icon */
 	var thisHeight = Height / 3 - 43;
 	$('.spinner-background').attr('style', 'left: '+ (Width / 2 - 43)  +'px; top: '+ (thisHeight < 0 ? 0 : thisHeight) +'px;');
 
-	// Preventing Scrolling. 
+	/** Preventing Scrolling */ 
 	$('html, body').css({
 	    'overflow': 'hidden',
 	    'height': '100%'
 	});
+	
+	/** Show it spinner */
 	$('#'+ this.name).show('fast');
 }
 
@@ -50,8 +49,10 @@ MySpinner.prototype.show = function () {
  * This function will hide the spinner
  */
 MySpinner.prototype.hide = function () {
+	/** Actually Hide it */
 	$('#'+ this.name).hide('slow');
-	// Restoring Scrolling
+	
+	/** Restoring Scrolling */
 	$('html, body').css({
 	    'overflow': 'auto'
 	});
