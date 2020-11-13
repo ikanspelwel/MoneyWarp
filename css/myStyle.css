@@ -27,6 +27,15 @@ a, a:focus, a:hover {
 	cursor: pointer;
 }
 
+
+.add-here {
+	float: right;
+	padding-right: 5px;
+	padding-left: 5px;
+	position: relative;
+	bottom: 10px;
+}
+
 /*
  * Spinner styling
  */
