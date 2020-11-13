@@ -99,7 +99,15 @@ function ShowList() {
 		/** Else no errors proceed */
 		if(json.data.length == 0) {
 			/** If there aren't elements in the return array */
-			$('#List > div.mytable').html('None...');
+			$('#List > div.mytable').text('None...');
+			
+			/** Showing a hint if there are no existing accounts */
+			$('#List > div.mytable').append(
+				$('<span>').addClass('float-right').text('add payees here').append(
+					$('<i>').addClass('add-here fa fa-arrow-up fa-2x')
+				)
+			);
+
 		} else {
 			/** If there are elements in the return array */
 			
