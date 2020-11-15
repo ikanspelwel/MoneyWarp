@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 15, 2020 at 12:39 PM
+-- Generation Time: Nov 15, 2020 at 12:50 PM
 -- Server version: 5.5.65-MariaDB
 -- PHP Version: 5.4.16
 
@@ -29,14 +29,14 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `account` (
   `account_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
-  `description` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `type` enum('Checking','Savings') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Checking',
-  `account_num` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `aba` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `type` enum('Checking','Savings') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Checking',
+  `account_num` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `aba` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `active` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`account_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -50,18 +50,18 @@ CREATE TABLE IF NOT EXISTS `account_entries` (
   `amount` decimal(10,2) NOT NULL,
   `date` date NOT NULL,
   `reconciled` int(1) NOT NULL,
-  `type` enum('Deposit','Withdrawal','Transfer') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `check_num` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `type` enum('Deposit','Withdrawal','Transfer') COLLATE utf8_unicode_ci NOT NULL,
+  `check_num` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
   `payee_id` int(10) unsigned NOT NULL,
   `category_id` int(10) unsigned NOT NULL,
-  `memo` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `memo` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`account_entries_id`),
   KEY `account_id` (`account_id`),
   KEY `payee_id` (`payee_id`),
   KEY `category_id` (`category_id`),
   KEY `amount` (`amount`),
   KEY `reconciled` (`reconciled`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -72,11 +72,11 @@ CREATE TABLE IF NOT EXISTS `account_entries` (
 CREATE TABLE IF NOT EXISTS `category` (
   `category_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
-  `name` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `notes` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `notes` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`category_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `current_account` (
   `account_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   KEY `account_id` (`account_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -100,11 +100,11 @@ CREATE TABLE IF NOT EXISTS `current_account` (
 CREATE TABLE IF NOT EXISTS `payee` (
   `payee_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
-  `name` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `notes` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `notes` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`payee_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -114,13 +114,13 @@ CREATE TABLE IF NOT EXISTS `payee` (
 
 CREATE TABLE IF NOT EXISTS `user` (
   `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `user_name` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name` (`user_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -132,17 +132,17 @@ CREATE TABLE IF NOT EXISTS `warp_entry` (
   `warp_entry_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `account_id` int(10) unsigned NOT NULL,
   `amount` decimal(10,0) NOT NULL,
-  `frequency` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `frequency` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `start_date` date NOT NULL,
-  `type` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `category_id` int(10) unsigned NOT NULL,
   `payee_id` int(10) unsigned NOT NULL,
-  `memo` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `memo` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`warp_entry_id`),
   KEY `account_id` (`account_id`),
   KEY `category_id` (`category_id`),
   KEY `payee_id` (`payee_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Constraints for dumped tables
@@ -172,8 +172,8 @@ ALTER TABLE `category`
 -- Constraints for table `current_account`
 --
 ALTER TABLE `current_account`
-  ADD CONSTRAINT `current_account_ibfk_2` FOREIGN KEY (`account_id`) REFERENCES `account` (`account_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `current_account_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `current_account_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `current_account_ibfk_2` FOREIGN KEY (`account_id`) REFERENCES `account` (`account_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `payee`
