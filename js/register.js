@@ -332,10 +332,10 @@ function MaintainHeight() {
 		useableHeight -= ( $('#RegisterList').outerHeight(true) + $('#RegisterEntry').outerHeight(true) - $('#RegisterList').height() - $('#RegisterEntry').height() );
 
 		/** Set the height of the Register List <div> to 2/3s */
-		$('#RegisterList').height(useableHeight * .6665);
+		$('#RegisterList').height(useableHeight * .6666);
 		
 		/** Set the height of the Register Entry <div> to 1/3s */
-		$('#RegisterEntry').height(useableHeight * .3332);
+		$('#RegisterEntry').height(useableHeight * .3334);
 		
 	}
 }
