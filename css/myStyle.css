@@ -74,7 +74,7 @@ a, a:focus, a:hover {
 }
 
 .nav-bar {
-	padding: 5px 20px;
+	padding: 5px 20px 0;
 }
 
 .nav-bar > div {
@@ -170,7 +170,19 @@ a:hover, a:focus {
 	white-space: nowrap;
 }
 
+#Register {
+	padding: 10px;
+}
 
+#RegisterList {
+	margin-bottom: 10px;
+}
+
+#RegisterList, #RegisterEntry {
+	background-color: rgb(38, 51, 66);
+	border-radius: .5rem!important;
+	padding: 15px;
+}
 
 .card {
 	background-color: rgba(42, 57, 75, 0.9);

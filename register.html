@@ -12,20 +12,24 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
-<!--  Include jQuery UI -->
+<!-- Include jQuery UI -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/eggplant/jquery-ui.css" crossorigin="anonymous">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+
+<!-- Including Font Awesome -->
+<script src="https://use.fontawesome.com/7b358a14cc.js"></script>
 
 <!-- Including my custom JavaScript -->
 <script type="text/javascript" src="js/Classes/MyAttention.js"></script>
 <script type="text/javascript" src="js/Classes/MySessions.js"></script>
+<script type="text/javascript" src="js/Classes/MySpinner.js"></script>
 <script type="text/javascript" src="js/register.js"></script>
 
 <!-- Including my custom CSS -->
 <link rel="stylesheet" href="css/myStyle.css">
 
 </head>
-<body>
+<body class="myHidden">
 <div class="nav-bar">
 	<div><h2>Money Warp</h2></div>
 	<div class="justify-content-center">
@@ -34,6 +38,59 @@
 		<a id="logout" class="nav-link" href="logout.html">Logout</a>
 	</div>
 </div>
-<h1>Coming Soon</h1>
+<div id="Register" class="card full myHidden">
+	<div id="RegisterList">
+		<div class="h3 mb-3 font-weight-normal d-inline-block">Account Register:</div>
+		<div class="d-inline-block">
+			<select class="form-control" id="accountList">
+		    </select>
+		</div>
+		<div class="mytable">
+			<div id="list">
+				<div>
+					<div>Name</div>
+					<div>Type</div>
+					<div>Account #</div>
+					<div>Routing #</div>
+					<div class="text-center">Active</div>
+					<div class="text-center">Edit</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="RegisterEntry">
+		testing
+	</div>
+</div>
+<div id="AddUpdate" class="myHidden">
+	<div class="form-group">
+		<label for="description">Name</label>
+		<input id="description" placeholder="Account Nickname" type="text" class="form-control" required autofocus>
+	</div>
+	
+	<div class="form-group">
+		<label for="type">Type</label>
+	    <select class="form-control" id="type">
+	      <option value="0">-- Please Select --</option>
+	      <option value="Checking">Checking</option>
+	      <option value="Savings">Savings</option>
+	    </select>
+	</div>
+	<div class="form-group">
+		<label for="account_num">Number</label>
+		<input id="account_num" placeholder="Account Number" type="text" class="form-control"  required>
+	</div>
+	<div class="form-group">
+		<label for="aba">Routing Number</label>
+		<input id="aba" placeholder="Account Routing Number" type="text" class="form-control"  required>
+	</div>
+	<div class="form-group">
+		<label for="active">Active</label>
+	    <select class="form-control" id="active">
+	      <option value="1">Yes</option>
+	      <option value="0">No</option>
+	    </select>
+	</div>
+</div>
 </body>
 </html>
