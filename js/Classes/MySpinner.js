@@ -35,12 +35,6 @@ MySpinner.prototype.show = function () {
 	var thisHeight = Height / 3 - 43;
 	$('.spinner-background').attr('style', 'left: '+ (Width / 2 - 43)  +'px; top: '+ (thisHeight < 0 ? 0 : thisHeight) +'px;');
 
-	/** Preventing Scrolling */ 
-	$('html, body').css({
-	    'overflow': 'hidden',
-	    'height': '100%'
-	});
-	
 	/** Show it spinner */
 	$('#'+ this.name).show('fast');
 }
@@ -51,9 +45,4 @@ MySpinner.prototype.show = function () {
 MySpinner.prototype.hide = function () {
 	/** Actually Hide it */
 	$('#'+ this.name).hide('slow');
-	
-	/** Restoring Scrolling */
-	$('html, body').css({
-	    'overflow': 'auto'
-	});
 }
