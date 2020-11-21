@@ -6,6 +6,7 @@ var Session;	// Global placeholder for the Session Class
 var Wait;		// Global placeholder for the MySpinner Class
 
 var lastWindowHeight = 0;	// Var to hold the last reported window height
+var lastWindowWidth = 0;	// Var to hold the last reported window width
 var useableHeight = 0;		// Var to hold the actually usable window height
 
 /**
@@ -70,13 +71,14 @@ $( document ).ready(function() {
 			/** Bind the window resizing */
 			$(window).resize(function() {
 				MaintainHeight();
+				MaintainWidths();
 			});
 			
 			/** Show the main body */
-			$('body').show();
-			
-			/** Trigger a resize event to set the initial height */
-			$(window).trigger('resize');
+			$('body').show(function(){
+				/** Trigger a resize event to set the initial height */
+				$(window).trigger('resize');
+			});
 			
 			/** Get all the accounts */
 			GetAccounts();
@@ -317,25 +319,55 @@ function MaintainHeight() {
 		/** Removing the padding around the register div */
 		useableHeight -= ( $('#Register').outerHeight(true) - $('#Register').height() );
 	
-		/** Now set the Register DIV to the vailable height */
+		/** Now set the Register DIV to the available height */
 		$('#Register').height(useableHeight);
 		
-		/**
-		 * Now we need to set the Heights of the internal components
-		 * 
-		 * The top part with be 2/3 high
-		 * The bottom part will be 1/3 high
-		 * 
-		 */
-
 		/** Removing the padding around the two div */
 		useableHeight -= ( $('#RegisterList').outerHeight(true) + $('#RegisterEntry').outerHeight(true) - $('#RegisterList').height() - $('#RegisterEntry').height() );
 
-		/** Set the height of the Register List <div> to 2/3s */
-		$('#RegisterList').height(useableHeight * .6666);
+		/** Removing the height of the register entry form */ 
+		useableHeight -= $('.register-entry').outerHeight(true);
+
+		/** Maintianing at least x pixels */
+		useableHeight = (useableHeight < 300 ? 300 : useableHeight);
 		
-		/** Set the height of the Register Entry <div> to 1/3s */
-		$('#RegisterEntry').height(useableHeight * .3334);
+		/** Set the height of the Register List to the remaining value */
+		$('#RegisterList').height(useableHeight);
+
+		/** Need to check to height of the background DIV to make sure it is at least the combined height of both inner divs. */
+		if( $('#Register').height() < ($('#RegisterList').outerHeight(true) + $('#RegisterEntry').outerHeight(true)) ) {
+			/** If it isn't then force it */
+			$('#Register').height($('#RegisterList').outerHeight(true) + $('#RegisterEntry').outerHeight(true));
+		}
 		
 	}
+}
+
+/**
+ * Function to maintain the widths of the form entry
+ * 
+ * @returns void
+ */
+function MaintainWidths() {
+	/** Check to see if the window width has changed */
+	if( lastWindowWidth != $(window).width() ) {
+		/** If it has, resize stuff */
+		
+		/** Storing the last value */
+		lastWindowWidth = $(window).width();
+		
+		/** Resetting the width to auto */
+		$('.colOne').width('auto');
+		$('.colThree').width('auto');
+		
+		/** Finding the max width of each form heading */
+		columnOneWidth = Math.max.apply(Math, $('.colOne').map(function(){ return $(this).outerWidth(true); }).get());
+		columnThreeWidth = Math.max.apply(Math, $('.colThree').map(function(){ return $(this).outerWidth(true); }).get());
+		
+		/** Hardcoding the Widths */
+		$('.colOne').width(columnOneWidth);
+		$('.colThree').width(columnThreeWidth);
+		
+	}
+	
 }

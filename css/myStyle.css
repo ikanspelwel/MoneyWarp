@@ -128,6 +128,46 @@ a:hover, a:focus {
 	margin-right: 2px;
 }
 
+.register-entry > div {
+	display: table;
+	width: 100%;
+}
+
+.register-entry > div > div {
+	display: table-row;
+}
+
+/** Even Rows have a different shade */
+.register-entry > div > div:nth-child(even) {
+	background-color: rgba(70, 65, 90, 0.75);
+}
+
+/** Adding some padding to each table cell */
+.register-entry > div > div > div {
+	display: table-cell;
+	padding: 5px;
+	vertical-align: middle;
+}
+
+.register-entry > div > div > div:LAST-CHILD {
+	float: right;
+	text-align: left;
+}
+
+.register-entry > div > div > div div {
+	padding-right: 5px;
+	white-space: nowrap;
+}
+
+.register-entry > div > div > div:FIRST-CHILD > div:FIRST-CHILD {
+	/* width: 80px; */
+}
+
+.register-entry > div > div > div:FIRST-CHILD > div:LAST-CHILD {
+	/* width: 80px; */
+}
+
+
 .mytable > div {
 	display: table;
 	width: 100%;
