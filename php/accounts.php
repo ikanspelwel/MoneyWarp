@@ -111,7 +111,7 @@ function AddUpdate($vars) {
             /** Initiate my database class */
             $db = new ikanspelwel\MyDatabase();
             
-            if($vars['account_id']) {
+            if(array_key_exists('account_id', $vars) && $vars['account_id']) {
                 /** If the account_id has been provided it is an updated */
 
                 /** Prepare Statement */
