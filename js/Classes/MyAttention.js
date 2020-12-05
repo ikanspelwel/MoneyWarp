@@ -48,28 +48,24 @@ MyAttention.prototype.show = function (contents, options) {
 	/** If no options were supplied create an empty object. */
 	if(!options) var options = new Object;
 
+	/** Removing any old data */
+	$('#'+ this.name +'-div').removeClass('ui-state-error ui-state-highlight').html('');
+	
 	if( options.type == 'generic') {
 		/** If type is generic */
-		$('#'+ this.name +'-div').removeClass('ui-state-error ui-state-highlight').html(''); // Removing the old
 		$('#'+ this.name).dialog( 'option', 'title', (options.title ? options.title : 'Money Warp') );
 	} else {
 		/** Else it is a normal info/warning/error dialog box */
-		$('#'+ this.name +'-div').removeClass('ui-state-error ui-state-highlight').html(
-			$('<div>').attr('id', this.name +'-icon').addClass('ui-icon')
-		);
 		if ( options.type == 'info') {
-			// If type is info
+			/** If type is info */
 			$('#'+ this.name).dialog( 'option', 'title', (options.title ? options.title : 'Information') );
-			$('#'+ this.name +'-icon').addClass('ui-icon-info');
 		} else if ( options.type == 'warning') {
-			// If type is warning
+			/** If type is warning */
 			$('#'+ this.name).dialog( 'option', 'title', (options.title ? options.title : 'Warning') );
-			$('#'+ this.name +'-icon').addClass('ui-icon-info');
 			$('#'+ this.name +'-div').addClass('ui-state-highlight');
 		} else {
-			// Default will be error.
+			/** Default will be error. */
 			$('#'+ this.name).dialog( 'option', 'title', (options.title ? options.title : 'Error') );
-			$('#'+ this.name +'-icon').addClass('ui-icon-alert');
 			$('#'+ this.name +'-div').addClass('ui-state-error');
 		}
 	}
