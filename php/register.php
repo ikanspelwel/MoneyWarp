@@ -48,11 +48,11 @@ switch ( $doWhat ) {
     case 'getRegisterFormItems':
         GetRegisterFormItems($_REQUEST);
         break;
-    case 'addRegisterEntry':
-        AddRegisterEntry($_REQUEST);
+    case 'addUpdateRegisterEntry':
+        AddUpdateRegisterEntry($_REQUEST);
         break;
     case 'getRegister':
-        //GetItem($_REQUEST);
+        GetRegister($_REQUEST);
         break;
     case 'addUpdate':
         AddUpdate($_REQUEST);
@@ -63,13 +63,62 @@ switch ( $doWhat ) {
 }
 
 /**
+ * Function to return all the register entries
+ * from the database.
+ * 
+ * @param array $vars passing the $_REQUEST vars in
+ */
+function GetRegister($vars) {
+    /** Making my global var accessible to this function */
+    global $mySession, $myReturn, $errors, $debug;
+    
+    /** Var to hold all the data */
+    $data = array();
+    
+    /** Var to hold the balance total */
+    $balance = 0;
+ 
+    /** Need to get all the registry entries out of the Database */
+    try {
+        /** Initiate my database class */
+        $db = new ikanspelwel\MyDatabase();
+        
+        /** Prepare Statement */
+        $getAccountEntries = $db->get_dbh()->prepare( 'SELECT `account_entries_id`, `amount`, `account_entries`.`type`, date, DATE_FORMAT(`date`, "%b %e, %Y") AS `displayDate`, `check_num`, `payee_id`, `payee`.`name`, `category_id`, `memo` FROM `account_entries` LEFT JOIN `account` USING(`account_id`) LEFT JOIN `payee` USING(`payee_id`) WHERE `account_id` = :account_id AND `account`.`user_id` = :user_id ORDER BY `date`, `account_entries_id`' );
+        
+        /** Execute Statement */
+        $getAccountEntries->execute( array(':user_id' => $_SESSION['user_id'], ':account_id' => $vars['account_id']) );
+        
+        /** Get the results */
+        while ($reference = $getAccountEntries->fetch(PDO::FETCH_ASSOC)) {
+            /** Massaging Data */
+            $balance += $reference['amount'];
+            $reference['balance'] = sprintf("%.2f", $balance);
+            $reference['check_num'] = ($reference['check_num'] ? $reference['check_num'] : 'n/a');
+            
+            /** Storing each returned row in the data var */
+            $data[] = $reference;
+        }
+        
+    } catch (Exception $e) {
+        /** If any exception occurred report it */
+        mail(ADMIN_EMAIL, 'MySQL PDO Error', $e->getMessage() .' in '. __FILE__ ." on line ". __LINE__, FORMATED_FROM, '-f'. FROM_ADDRESS);
+        $myReturn->json( array('error' => "A system error has occurred, please refresh and try again. If this error persists please report it.") );
+        exit;
+    }
+    
+    /** Returning data via json */
+    $myReturn->json( array('data' => $data, 'error' => $errors->getString('<br />')) );
+}
+
+/**
  * Function to add a new registry entry to the database.
  * This function will first verify all the data is 
  * acceptable, and then process the add.
  * 
  * @param array $vars passing the $_REQUEST vars in
  */
-function AddRegisterEntry($vars) {
+function AddUpdateRegisterEntry($vars) {
     /** Making my global var accessible to this function */
     global $mySession, $myReturn, $errors, $debug;
     
@@ -83,9 +132,11 @@ function AddRegisterEntry($vars) {
         
         /** Prepare Statements */
         $verifyAccount = $db->get_dbh()->prepare( 'SELECT `account_id` FROM `account` WHERE `user_id` = :user_id AND `account_id` = :account_id' );
+        $verifyAccountEntry = $db->get_dbh()->prepare( 'SELECT `account_entries_id` FROM `account_entries` LEFT JOIN `account` USING(`account_id`)  WHERE `user_id` = :user_id AND `account_entries_id` = :account_entries_id' );
         $verifyPayee = $db->get_dbh()->prepare( 'SELECT `payee_id` FROM `payee` WHERE `payee_id` = :payee_id AND `user_id` = :user_id' );
         $verifyCategory = $db->get_dbh()->prepare( 'SELECT `category_id` FROM `category` WHERE `category_id` = :category_id AND `user_id` = :user_id' );
         $accountEntryAdd = $db->get_dbh()->prepare( 'INSERT INTO `account_entries` (`account_id`, `amount`, `date`, `type`, `check_num`, `payee_id`, `category_id`, `memo`) VALUES(:account_id, :amount, :date, :type, :check_num, :payee_id, :category_id, :memo)' );
+        $accountEntryUpdate = $db->get_dbh()->prepare( 'UPDATE `account_entries` SET `account_id` = :account_id, `amount` = :amount, `date` = :date, `type` = :type, `check_num` = :check_num, `payee_id` = :payee_id, `category_id` = :category_id, `memo` = :memo WHERE `account_entries_id` = :account_entries_id' );
         
     } catch (Exception $e) {
         /** If any exception occurred report it */
@@ -116,6 +167,28 @@ function AddRegisterEntry($vars) {
     /** Verifying that the provided account_id was found in the db. */
     if($vars['account_id'] != $db_account_id) {
         $errors->ErrorMsg(' - Invalid Account, please select one from the pull down list.');
+    }
+
+    /** Checking to see if this is an update */
+    if($vars['account_entries_id']) {
+        /** Verifying the account_entries_id */
+        try {
+            /** Execute Statement */
+            $verifyAccountEntry->execute( array(':user_id' => $_SESSION['user_id'], ':account_entries_id' => $vars['account_entries_id']) );
+            
+            /** Get the results */
+            list($db_account_entries_id) = $verifyAccountEntry->fetch(PDO::FETCH_NUM);
+            
+        } catch (Exception $e) {
+            /** If any exception occurred report it */
+            mail(ADMIN_EMAIL, 'MySQL PDO Error', $e->getMessage() .' in '. __FILE__ ." on line ". __LINE__, FORMATED_FROM, '-f'. FROM_ADDRESS);
+            $myReturn->json( array('error' => "A system error has occurred, please refresh and try again. If this error persists please report it.") );
+        }
+        
+        /** Verifying that the provided account_id was found in the db. */
+        if($vars['account_entries_id'] != $db_account_entries_id) {
+            $errors->ErrorMsg(' - Invalid Registry Entry, please refresh and try again.');
+        }
     }
     
     /** Verifying Type */
@@ -194,9 +267,6 @@ function AddRegisterEntry($vars) {
         $errors->ErrorMsg(' - Amount is invalid, amount must be a number with no more than two decimal places, ie $1.00');
     }
 
-    /** Converting Amount into a float */
-    $vars['amount'] += 0.00;
-    
     /** Checking to see if any errors were found */
     if($errors->ErrorMsg()) {
         /** If there were any errors */
@@ -205,8 +275,6 @@ function AddRegisterEntry($vars) {
         $myReturn->json( array('error' => $errors->getString('<br />')) );
     }
     
-    // TODO: If we are doing an update, verify the account_entries_id is vaild and the user_id matches.
-    
     /**
      *
      * Done all Data Verification
@@ -214,22 +282,40 @@ function AddRegisterEntry($vars) {
      * We are now good to proceed with an insert/update.
      *
      */
+
+    /** Converting Amount into a float */
+    $vars['amount'] += 0.00;
+    
+    /** Converting Withdrawls into negative numbers */
+    if($vars['type'] == 'Withdrawal') {
+        $vars['amount'] *= -1;
+    }    
     
     /**
-     * Inserting data into database
+     * Inserting or Updating the data in the database
      */
     try {
-        /** Execute Statement */
-        $accountEntryAdd->execute( array(':account_id' => $vars['account_id'], ':amount' => $vars['amount'], ':date' => $vars['date'], ':type' => $vars['type'], ':check_num' => $vars['check_num'], ':payee_id' => $vars['payee_id'], ':category_id' => $vars['category_id'], ':memo' => $vars['memo']) );
         
-        /** Checking for affected rows */
-        if($accountEntryAdd->rowCount() != 1) {
-            /**
-             * No rows were inserted, this shouldn't normally ever happen.
-             */
-            $errors->ErrorMsg(' - Unable to add new account entry, please try again.');
+        /** Checking to see if this is an update */
+        if($vars['account_entries_id']) {
+         
+            $accountEntryUpdate->execute( array(':account_id' => $vars['account_id'], ':amount' => $vars['amount'], ':date' => $vars['date'], ':type' => $vars['type'], ':check_num' => $vars['check_num'], ':payee_id' => $vars['payee_id'], ':category_id' => $vars['category_id'], ':memo' => $vars['memo'], ':account_entries_id' => $vars['account_entries_id']) );
+            
         } else {
-            $data['success'] = TRUE;
+            
+            /** Execute Statement */
+            $accountEntryAdd->execute( array(':account_id' => $vars['account_id'], ':amount' => $vars['amount'], ':date' => $vars['date'], ':type' => $vars['type'], ':check_num' => $vars['check_num'], ':payee_id' => $vars['payee_id'], ':category_id' => $vars['category_id'], ':memo' => $vars['memo']) );
+            
+            /** Checking for affected rows */
+            if($accountEntryAdd->rowCount() != 1) {
+                /**
+                 * No rows were inserted, this shouldn't normally ever happen.
+                 */
+                $errors->ErrorMsg(' - Unable to add new account entry, please try again.');
+            } else {
+                $data['success'] = TRUE;
+            }
+            
         }
         
     } catch (Exception $e) {
@@ -283,87 +369,7 @@ function UpdateCurrentAccount($vars) {
     } /** end of no errors */
 
     /** Returning data via json */
-    $myReturn->json( array('data' => $data, 'error' => $errors->getString('<br/>')) );
-}
-
-/**
- * Function to add or update an payee in the
- * database. We will first check to make sure all
- * the provided values are valid and then we will
- * attempt to update the database. 
- *
- * @param array $vars passing the $_REQUEST vars in
- */
-function AddUpdate($vars) {
-    /** Making my global var accessible to this function */
-    global $mySession, $myReturn, $errors, $debug;
-    
-    /** Var to hold all the data */
-    $data = array();
-    
-    /** Removing white spaces from beginning and end of fields */
-    foreach(array('name', 'notes') AS $eachVar) {
-        $vars[$eachVar] = trim($vars[$eachVar]);
-    }
-    
-    /** Checking to make sure a Nickname was provided */
-    if($vars['name'] == "") {
-        $errors->ErrorMsg(' - Please provided a name for this payee');
-    }
-    
-    /** All Checks have been performed */
-    
-    /** Checking our error var for any errors */
-    if(!$errors->ErrorMsg()) {
-        
-        /** No error have been reported, okay to update database */
-        try {
-            /** Initiate my database class */
-            $db = new ikanspelwel\MyDatabase();
-            
-            if($vars['payee_id']) {
-                /** If the payee_id has been provided it is an updated */
-
-                /** Prepare Statement */
-                $updateItem = $db->get_dbh()->prepare( 'UPDATE `payee` SET `name` = :name, `notes` = :notes WHERE `user_id` = :user_id AND `payee_id` = :payee_id' );
-                
-                /** Execute Statement */
-                $updateItem->execute( array(':user_id' => $_SESSION['user_id'], ':payee_id' => $vars['payee_id'], ':name' => $vars['name'], ':notes' => $vars['notes']) );
-                
-            } else {
-                /** No payee_id means it is an add */
-
-                /** Prepare Statement */
-                $addItem = $db->get_dbh()->prepare( 'INSERT INTO `payee` (`user_id`, `name`, `notes`) VALUES(:user_id, :name, :notes)' );
-
-                /** Execute Statement */
-                $addItem->execute( array(':user_id' => $_SESSION['user_id'], ':name' => $vars['name'], ':notes' => $vars['notes']) );
-
-                /** Checking for affected rows */
-                if($addItem->rowCount() != 1) {
-                    /**
-                     * No rows were inserted, so that user_id/payee_id
-                     * must have been invaild. Going to report a error,
-                     * However the user is probably trying to do something
-                     * bad because this shouldn't ever happen in normal
-                     * operation.
-                     */
-                    $errors->ErrorMsg(' - Unable to add new payee.');
-                }
-                
-            }
-            
-        } catch (Exception $e) {
-            /** If any exception occurred report it */
-            mail(ADMIN_EMAIL, 'MySQL PDO Error', $e->getMessage() .' in '. __FILE__ ." on line ". __LINE__, FORMATED_FROM, '-f'. FROM_ADDRESS);
-            $myReturn->json( array('error' => "A system error has occurred, please refresh and try again. If this error persists please report it.") );
-            exit;
-        }
-        
-    }
-    
-    /** Returning data via json */
-    $myReturn->json( array('data' => $data, 'error' => $errors->getString('<br/>')) );
+    $myReturn->json( array('error' => $errors->getString('<br/>')) );
 }
 
 /**
@@ -433,7 +439,7 @@ function GetAccounts($vars) {
     /** Var to hold all the data */
     $data = array();
 
-    /** Need to get all the payees out of the Database */
+    /** Need to get all the accounts out of the Database */
     try {
         /** Initiate my database class */
         $db = new ikanspelwel\MyDatabase();

@@ -169,6 +169,19 @@ a:hover, a:focus {
 	vertical-align: middle;
 }
 
+#Register #list > div > div {
+	white-space: nowrap;
+}
+
+#Register #list > div {
+	cursor: pointer;
+}
+
+.register-payee {
+	width: 100%;
+	white-space: normal;
+}
+
 .register-entry > div > div > div > div {
 	padding-right: 5px;
 	white-space: nowrap;
@@ -182,6 +195,17 @@ a:hover, a:focus {
 	/* width: 80px; */
 }
 
+#registerListContainer {
+	overflow-y: auto;
+}
+
+#account_id {
+	/* height: calc(1.5em + 0rem + 2px); */
+}
+
+#account_id_div {
+	vertical-align: 3px;
+}
 
 .mytable > div {
 	display: table;

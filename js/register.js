@@ -50,8 +50,22 @@ $( document ).ready(function() {
 			 */
 			
 			/** Turn the Add/Edit into a Pop Up */
-			$('#AddUpdate').dialog({
-				autoOpen: false
+			$('#AddPayee').dialog({
+				autoOpen: false,
+				title: 'Add Payee',
+				buttons: {
+					"Add": function() { AddPayee(); },
+					"Cancel": function() { $(this).dialog('close'); }
+				}
+			}); // end of new dialog box
+
+			$('#AddCategory').dialog({
+				autoOpen: false,
+				title: 'Add Category',
+				buttons: {
+					"Add": function() { AddCategory(); },
+					"Cancel": function() { $(this).dialog('close'); }
+				}
 			}); // end of new dialog box
 
 			/** Turn the Date field into a DatePicker */
@@ -78,14 +92,20 @@ $( document ).ready(function() {
 			/** Bind the pull down payee box */
 			$('#payee_id').on('change', function() {
 				if($('#payee_id').val() == 0) {
-					console.log('add payee');
+					$('#payee_id').val(-1);
+					$('#payee_name').val('');
+					$('#payee_notes').val('');
+					$('#AddPayee').dialog('open');
 				}
 			});
 			
 			/** Bind the pull down category box */
 			$('#category_id').on('change', function() {
 				if($('#category_id').val() == 0) {
-					console.log('add category');
+					$('#category_id').val(-1);
+					$('#category_name').val('');
+					$('#category_notes').val('');
+					$('#AddCategory').dialog('open');
 				}
 			});
 			
@@ -105,7 +125,7 @@ $( document ).ready(function() {
 
 			/** Bind the register entry button */
 			$('#addRegisterItem').on('click', function() {
-				AddRegisterEntry();
+				AddUpdateRegisterEntry($(this).data('account_entries_id'));
 			});
 
 			/** Bind the window resizing */
@@ -130,12 +150,92 @@ $( document ).ready(function() {
 	
 });
 
+
+/**
+ * Function to add a new category
+ * 
+ * @returns void
+ */
+function AddCategory() {
+	/** Show the spinning wheel */
+	Wait.show();
+	
+	/** Calling the categories php via ajax */
+	$.ajax({
+		url: 'php/categories.php',
+		type: 'POST',
+		cache: 'false',
+		data: {
+			doWhat: 'addUpdate',
+			name: $('#category_name').val(),
+			notes: $('#category_notes').val()
+		}
+	})
+	.fail(function(jqXHR, textStatus, errorThrown) {
+		/** Something odd happend, normally this should never happen. */
+		alert('A system error has occurred, please refresh and try again. If this error persists please report it.');
+	})
+	.done(function(json) {
+		/** Hide the spinning wheel */
+		Wait.hide();
+
+		if(json.error) {
+			/** If there was an error, show it. */
+			Attention.show( json.error, {onClose: (json.loggedOut ? 'Logout' : '' )} );
+		} else {
+			$('#AddCategory').dialog('close');
+		}
+		
+	}); /** End of ajax "done" */
+
+}
+
+/**
+ * Function to add a payee
+ * 
+ * @returns void
+ */
+function AddPayee() {
+	/** Show the spinning wheel */
+	Wait.show();
+	
+	/** Calling the payees php via ajax */
+	$.ajax({
+		url: 'php/payees.php',
+		type: 'POST',
+		cache: 'false',
+		data: {
+			doWhat: 'addUpdate',
+			name: $('#payee_name').val(),
+			notes: $('#payee_notes').val()
+		}
+	})
+	.fail(function(jqXHR, textStatus, errorThrown) {
+		/** Something odd happend, normally this should never happen. */
+		alert('A system error has occurred, please refresh and try again. If this error persists please report it.');
+	})
+	.done(function(json) {
+		/** Hide the spinning wheel */
+		Wait.hide();
+
+		if(json.error) {
+			/** If there was an error, show it. */
+			Attention.show( json.error, {onClose: (json.loggedOut ? 'Logout' : '' )} );
+		} else {
+			$('#AddPayee').dialog('close');
+		}
+		
+	}); /** End of ajax "done" */
+
+}
+
+
 /**
  * Function to process adding an entry to the register.
  * 
  * @returns void
  */
-function AddRegisterEntry() {
+function AddUpdateRegisterEntry(account_entries_id) {
 	/** Show the spinning wheel */
 	Wait.show();
 
@@ -145,7 +245,8 @@ function AddRegisterEntry() {
 		type: 'POST',
 		cache: 'false',
 		data: {
-			doWhat: 'addRegisterEntry',
+			doWhat: 'addUpdateRegisterEntry',
+			account_entries_id: account_entries_id,
 			account_id: $('#account_id').val(),
 			amount: $('#amount').val(),
 			date: $.datepicker.formatDate('yy-mm-dd', $( "#date" ).datepicker('getDate')),
@@ -173,7 +274,7 @@ function AddRegisterEntry() {
 
 		} else {
 			/** If there was no errors, Show success message */
-			Attention.show('Entry added successfully.', {type: 'info', onClose: function(){
+			Attention.show('Entry added/updated successfully.', {type: 'info', onClose: function(){
 				/** Show the spinning wheel */
 				Wait.show();
 				
@@ -413,6 +514,7 @@ function SetRegisterForm(callback) {
 		$('#amount').val('');
 		$('#check_num').val('');
 		$( "#date" ).datepicker('setDate', new Date());
+		$('#addRegisterItem').text('Enter').data('account_entries_id', null)
 
 		/** Adding the Defaults */
 		$('#payee_id').append(
@@ -461,6 +563,9 @@ function SetRegisterForm(callback) {
  */
 function LoadRegister(account_id) {
 	
+	/** Reset the List */
+	$('#list > div').not(':first').remove();
+	
 	/** Calling the payees php via ajax */
 	$.ajax({
 		url: 'php/register.php',
@@ -479,43 +584,55 @@ function LoadRegister(account_id) {
 		alert('A system error has occurred, please refresh and try again. If this error persists please report it.');
 	})
 	.done(function(json) {
-//		if(json.error) {
-//			/** Hide the spinning wheel */
-//			Wait.hide();
-//
-//			/** If there was an error, show it. */
-//			Attention.show( json.error, {onClose: (json.loggedOut ? 'Logout' : '' )} );
-//			return;
-//		}
-//		
-//		/** Else no errors proceed */
-//		if(json.data.length == 0) {
-//			/** If there aren't elements in the return array */
-//			$('#Register > div.mytable').html('None...');
-//		} else {
-//			/** If there are elements in the return array */
-//			
-//			/** Appending each to the DOM */
-//			jQuery.each(json.data, function (id, data) {
-//				$('#Register').append(
-//					$('<div>').append(
-//						$('<div>').text(data.name),
-//						$('<div>').text(data.notes),
-//						$('<div>').html(
-//							$('<i>').addClass('fa fa-pencil-square-o').on('click', function() { DisplayAddUpdate(data.payee_id); })
-//						)
-//					)
-//				);
-//			}); /** End of jQuery.each */
-//			
-//		} /** End of if there were elements in the data array */
+		if(json.error) {
+			/** Hide the spinning wheel */
+			Wait.hide();
+
+			/** If there was an error, show it. */
+			Attention.show( json.error, {onClose: (json.loggedOut ? 'Logout' : '' )} );
+			return;
+		}
+		
+		/** Else no errors proceed */
+		if(json.data.length == 0) {
+			/** If there aren't elements in the return array */
+			$('#list').append(
+					$('<div>').append(
+						$('<div>').text('None...'),
+						$('<div>').text(''),
+						$('<div>').text('').addClass('register-payee'),
+						$('<div>').text(''),
+						$('<div>').text('')
+					)
+				);
+
+		} else {
+			/** If there are elements in the return array */
+			
+			/** Appending each to the DOM */
+			jQuery.each(json.data, function (id, data) {
+				$('#list').append(
+					$('<div>').append(
+						$('<div>').text(data.check_num),
+						$('<div>').text(data.displayDate),
+						$('<div>').text(data.name).addClass('register-payee'),
+						$('<div>').text(data.amount),
+						$('<div>').text(data.balance)
+					).on("dblclick", function() { EditRegisterEntry(data); })
+				);
+			}); /** End of jQuery.each */
+
+		} /** End of if there were elements in the data array */
 
 		/** Now showing the Register */
 		$('#Register').show(function(){
 			/** Trigger a resize event to set the initial height */
 			$(window).trigger('resize');
+
+			/** Now scrolling to the end of the list, which is the most recent entries */
+			$("#registerListContainer").scrollTop(function() { return this.scrollHeight; });
 		});
-		
+
 		/** Hide the spinning wheel */
 		Wait.hide();
 		
@@ -523,6 +640,27 @@ function LoadRegister(account_id) {
 
 }
 
+/**
+ * Function to load the entry form with data from the registery.
+ * 
+ * @returns
+ */
+function EditRegisterEntry(data) {
+
+	/** Loading all the data into the form */
+	
+	$('#payee_id').val(data.payee_id);
+	$('#category_id').val(data.category_id);
+	$('#type').val(data.type);
+	$('#memo').val(data.memo);
+	$('#amount').val(Math.abs(data.amount).toFixed(2));
+	$('#check_num').val(data.check_num);
+	$( "#date" ).datepicker('option', 'dateFormat', 'yy-mm-dd');
+	$( "#date" ).datepicker('setDate', data.date);
+	$( "#date" ).datepicker('option', 'dateFormat', 'M d, yy');
+	$('#addRegisterItem').text('Update').data('account_entries_id', data.account_entries_id);
+	
+}
 
 /**
  * Function to maintain a full height div
@@ -558,6 +696,9 @@ function MaintainHeight() {
 		
 		/** Set the height of the Register List to the remaining value */
 		$('#RegisterList').height(useableHeight);
+		
+		/** Set the height of the Registers List Scrollable container */
+		$('#registerListContainer').height(useableHeight - $('#RegisterListHeader').outerHeight(true));
 
 		/** Need to check to height of the background DIV to make sure it is at least the combined height of both inner divs. */
 		if( $('#Register').height() < ($('#RegisterList').outerHeight(true) + $('#RegisterEntry').outerHeight(true)) ) {

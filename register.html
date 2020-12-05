@@ -40,20 +40,23 @@
 </div>
 <div id="Register" class="card full myHidden">
 	<div id="RegisterList">
-		<div class="h3 mb-3 font-weight-normal d-inline-block">Account Register:</div>
-		<div class="d-inline-block">
-			<select class="form-control" id="account_id">
-		    </select>
+		<div id="RegisterListHeader">
+			<div class="h3 mb-3 font-weight-normal d-inline-block">Account Register:</div>
+			<div class="d-inline-block" id="account_id_div">
+				<select class="form-control" id="account_id">
+			    </select>
+			</div>
 		</div>
-		<div class="mytable">
-			<div id="list">
-				<div>
-					<div>Name</div>
-					<div>Type</div>
-					<div>Account #</div>
-					<div>Routing #</div>
-					<div class="text-center">Active</div>
-					<div class="text-center">Edit</div>
+		<div id="registerListContainer">
+			<div class="mytable">
+				<div id="list">
+					<div>
+						<div>Num</div>
+						<div>Date</div>
+						<div class='register-payee'>Payee</div>
+						<div>Amount</div>
+						<div>Balance</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -120,34 +123,24 @@
 		</div>
 	</div>
 </div>
-<div id="AddUpdate" class="myHidden">
+<div id="AddPayee" class="myHidden">
 	<div class="form-group">
-		<label for="description">Name</label>
-		<input id="description" placeholder="Account Nickname" type="text" class="form-control" required autofocus>
-	</div>
-	
-	<div class="form-group">
-		<label for="type">Type</label>
-	    <select class="form-control" id="type">
-	      <option value="0">-- Please Select --</option>
-	      <option value="Checking">Checking</option>
-	      <option value="Savings">Savings</option>
-	    </select>
+		<label for="payee_name">Name</label>
+		<input id="payee_name" placeholder="Payee Name" type="text" class="form-control" required autofocus>
 	</div>
 	<div class="form-group">
-		<label for="account_num">Number</label>
-		<input id="account_num" placeholder="Account Number" type="text" class="form-control"  required>
+		<label for="payee_notes">Notes</label>
+		<input id="payee_notes" placeholder="Payee Notes" type="text" class="form-control"  required>
+	</div>
+</div>
+<div id="AddCategory" class="myHidden">
+	<div class="form-group">
+		<label for="category_name">Name</label>
+		<input id="category_name" placeholder="Category Name" type="text" class="form-control" required autofocus>
 	</div>
 	<div class="form-group">
-		<label for="aba">Routing Number</label>
-		<input id="aba" placeholder="Account Routing Number" type="text" class="form-control"  required>
-	</div>
-	<div class="form-group">
-		<label for="active">Active</label>
-	    <select class="form-control" id="active">
-	      <option value="1">Yes</option>
-	      <option value="0">No</option>
-	    </select>
+		<label for="category_notes">Notes</label>
+		<input id="category_notes" placeholder="Category Notes" type="text" class="form-control"  required>
 	</div>
 </div>
 </body>
