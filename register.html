@@ -42,7 +42,7 @@
 	<div id="RegisterList">
 		<div class="h3 mb-3 font-weight-normal d-inline-block">Account Register:</div>
 		<div class="d-inline-block">
-			<select class="form-control" id="accountList">
+			<select class="form-control" id="account_id">
 		    </select>
 		</div>
 		<div class="mytable">
@@ -69,56 +69,51 @@
 						      <option value="0">-- Please Select --</option>
 						      <option value="Deposit">Deposit</option>
 						      <option value="Withdrawal">Withdrawal</option>
-						      <option value="Transfer">Transfer</option>
+						      <!-- <option value="Transfer">Transfer</option>  -->
 						    </select>
 						</div>
 					</div>
 					<div>
 						<div class="colThree">Date:</div>
-						<div class="colFour"><input id="date" size="10" placeholder="12/30/2020" type="text" class="form-control"></div>
+						<div class="colFour"><input id="date" size="10" placeholder="" type="text" class="form-control"></div>
 					</div>
 				</div>
 				<div>
 					<div>
 						<div class="colOne">Payee:</div>
-						<div class="colTwo">
-						    <select class="form-control" id="payee">
-						      <option value="0">-- Please Select --</option>
-						      <option value="Deposit">Deposit</option>
-						      <option value="Withdrawal">Withdrawal</option>
-						      <option value="Transfer">Transfer</option>
-						    </select>
-						</div>
+						<div class="colTwo"><select class="form-control" id="payee_id"></select></div>
 					</div>
 					<div>
 						<div class="colThree">Check Number:</div>
-						<div class="colFour"><input id="check_num" size="10" placeholder="1234" type="text" class="form-control"></div>
+						<div class="colFour"><input id="check_num" size="10" placeholder="" type="text" class="form-control"></div>
 					</div>
 				</div>
 				<div>
 					<div>
 						<div class="colOne">Category:</div>
-						<div class="colTwo">
-						    <select class="form-control" id="category_id">
-						      <option value="0">-- Please Select --</option>
-						      <option value="Checking">Checking</option>
-						      <option value="Savings">Savings</option>
-						    </select>
-						</div>
+						<div class="colTwo"><select class="form-control" id="category_id"></select></div>
 					</div>
 					<div>
 						<div class="colThree">Amount:</div>
-						<div class="colFour"><input id="amount" size="10" placeholder="12.34" type="text" class="form-control"></div>
+						<div class="colFour input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">$</span>
+							</div>
+							<input id="amount" size="10" placeholder="0.00" type="text" class="form-control">
+						</div>
 					</div>
 				</div>
 				<div>
 					<div>
 						<div class="colOne">Memo:</div>
-						<div class="colTwo"><input id="memo" size="50" placeholder="" type="text" class="form-control"></div>
+						<div class="colTwo"><input id="memo" size="50" placeholder="Optional Description" type="text" class="form-control"></div>
 					</div>
 					<div>
 						<div class="colThree">&nbsp;</div>
-						<div class="colFour">&nbsp;</div>
+						<div class="colFour">
+							<button id="cancelRegisterItem" class="register-btn btn btn-lg btn-primary btn-block" type="submit">Cancel</button>
+							<button id="addRegisterItem" class="register-btn btn btn-lg btn-primary btn-block" type="submit">Enter</button>
+						</div>
 					</div>
 				</div>
 			</div>

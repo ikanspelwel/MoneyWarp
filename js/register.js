@@ -46,7 +46,7 @@ $( document ).ready(function() {
 			/**
 			 * They are logged in so we can
 			 * now proceed with loading up 
-			 * the register.
+			 * the register stuff.
 			 */
 			
 			/** Turn the Add/Edit into a Pop Up */
@@ -54,18 +54,58 @@ $( document ).ready(function() {
 				autoOpen: false
 			}); // end of new dialog box
 
+			/** Turn the Date field into a DatePicker */
+			$( "#date" ).datepicker({dateFormat: 'M d, yy'});
+			$( "#date" ).datepicker('setDate', new Date());
+
 			/** Bind the pull down account menu */
-			$('#accountList').on('change', function() {
+			$('#account_id').on('change', function() {
 				/**
 				 * If the account is changed we need to reload the register
 				 * and updated the "resent/active" account in the db.
 				 */
 				
+				/** Show the spinning wheel */
+				Wait.show();
+
 				/** Updating the Current Account */
-				UpdateCurrentAccount($('#accountList').val());
+				UpdateCurrentAccount($('#account_id').val());
 
 				/** Reloading the register with the new account info */
-				LoadRegister($('#accountList').val());
+				LoadRegister($('#account_id').val());
+			});
+
+			/** Bind the pull down payee box */
+			$('#payee_id').on('change', function() {
+				if($('#payee_id').val() == 0) {
+					console.log('add payee');
+				}
+			});
+			
+			/** Bind the pull down category box */
+			$('#category_id').on('change', function() {
+				if($('#category_id').val() == 0) {
+					console.log('add category');
+				}
+			});
+			
+			/** Bind the register cancel button */
+			$('#cancelRegisterItem').on('click', function() {
+				/** Show the spinning wheel */
+				Wait.show();
+				
+				/** Reset the Form */
+				SetRegisterForm(function(){
+					/** After SetRegisterForm runs successfully, these items will run */
+					
+					/** Once done, hide the waiting icon */
+					Wait.hide();
+				});
+			});
+
+			/** Bind the register entry button */
+			$('#addRegisterItem').on('click', function() {
+				AddRegisterEntry();
 			});
 
 			/** Bind the window resizing */
@@ -75,19 +115,82 @@ $( document ).ready(function() {
 			});
 			
 			/** Show the main body */
-			$('body').show(function(){
-				/** Trigger a resize event to set the initial height */
-				$(window).trigger('resize');
+			$('body').show();
+
+			/** Get all the entry form fields */
+			SetRegisterForm(function(){
+				/** After SetRegisterForm runs successfully, these items will run */
+
+				/** Get all the accounts */
+				GetAccounts();
 			});
-			
-			/** Get all the accounts */
-			GetAccounts();
 			
 		}
 	});
 	
 });
 
+/**
+ * Function to process adding an entry to the register.
+ * 
+ * @returns void
+ */
+function AddRegisterEntry() {
+	/** Show the spinning wheel */
+	Wait.show();
+
+	/** Call php to add register entry */
+	$.ajax({
+		url: 'php/register.php',
+		type: 'POST',
+		cache: 'false',
+		data: {
+			doWhat: 'addRegisterEntry',
+			account_id: $('#account_id').val(),
+			amount: $('#amount').val(),
+			date: $.datepicker.formatDate('yy-mm-dd', $( "#date" ).datepicker('getDate')),
+			type: $('#type').val(),
+			check_num: $('#check_num').val(),
+			payee_id: $('#payee_id').val(),
+			category_id: $('#category_id').val(),
+			memo: $('#memo').val()
+		}
+	})
+	.fail(function(jqXHR, textStatus, errorThrown) {
+		/** Hide the spinning wheel */
+		Wait.hide();
+
+		/** Something odd happend, normally this should never happen. */
+		alert('A system error has occurred, please refresh and try again. If this error persists please report it.');
+	})
+	.done(function(json) {
+		/** Hide the spinning wheel */
+		Wait.hide();
+
+		if(json.error) {
+			/** If there was an error, show it. */
+			Attention.show( json.error, {onClose: (json.loggedOut ? 'Logout' : '' )} );
+
+		} else {
+			/** If there was no errors, Show success message */
+			Attention.show('Entry added successfully.', {type: 'info', onClose: function(){
+				/** Show the spinning wheel */
+				Wait.show();
+				
+				/** Reset the register entry form */
+				SetRegisterForm(function(){
+					/** After SetRegisterForm runs successfully, these items will run */
+					
+					/** Reload the Register */
+					LoadRegister($('#account_id').val());
+				});
+			}});
+			
+			
+		}
+	});
+
+}
 
 /**
  * Function to update the current account in 
@@ -109,10 +212,16 @@ function UpdateCurrentAccount(account_id) {
 		}
 	})
 	.fail(function(jqXHR, textStatus, errorThrown) {
+		/** Hide the spinning wheel */
+		Wait.hide();
+
 		/** Something odd happend, normally this should never happen. */
 		alert('A system error has occurred, please refresh and try again. If this error persists please report it.');
 	})
 	.done(function(json) {
+		/** Hide the spinning wheel */
+		Wait.hide();
+
 		if(json.error) {
 			/** If there was an error, show it. */
 			Attention.show( json.error, {onClose: (json.loggedOut ? 'Logout' : '' )} );
@@ -121,6 +230,7 @@ function UpdateCurrentAccount(account_id) {
 			return;
 		}
 	});
+	
 }
 
 /**
@@ -128,10 +238,11 @@ function UpdateCurrentAccount(account_id) {
  * from the db, and populate the dropdown list.
  * This will also determine which account to 
  * display first.  
- * 
+ *
+ * @param callback funtion to run if provided after success
  * @returns
  */
-function GetAccounts() {
+function GetAccounts(callback) {
 	
 	/** Go and get all the accounts from the db */
 	$.ajax({
@@ -143,14 +254,20 @@ function GetAccounts() {
 		}
 	})
 	.fail(function(jqXHR, textStatus, errorThrown) {
+		/** Hide the spinning wheel */
+		Wait.hide();
+
 		/** Something odd happend, normally this should never happen. */
 		alert('A system error has occurred, please refresh and try again. If this error persists please report it.');
 	})
 	.done(function(json) {
 		if(json.error) {
+			/** Hide the spinning wheel */
+			Wait.hide();
+
 			/** If there was an error, show it. */
 			Attention.show( json.error, {onClose: (json.loggedOut ? 'Logout' : '' )} );
-
+			
 			/** Stop execution */
 			return;
 		}
@@ -175,7 +292,7 @@ function GetAccounts() {
 					activeCount++;
 				
 					/** Load the drop down box */
-					$('#accountList').append(
+					$('#account_id').append(
 						$('<option>').attr('value', data.account_id).text(data.description)
 					);
 					
@@ -191,17 +308,18 @@ function GetAccounts() {
 			/** Checking to see if there were active accounts */
 			if(activeCount) {
 				/** Selecting the active account from the list */
-				$('#accountList').val(last_account_id);
+				$('#account_id').val(last_account_id);
 				
 				/** Populate the Register */
 				LoadRegister(last_account_id);
 			}
 
 		} /** End of if there were elements in the data array */
-		
-		console.log(activeCount);
-		
+
+		/** Checking to see if there are accounts to use */
 		if(activeCount < 1) {
+			/** If there are not any acctive accounts tell the user this */
+			
 			/** Creating buttons for dialog box */
 			var buttons = {
 				"Manage Accounts": function() {
@@ -215,13 +333,19 @@ function GetAccounts() {
 			/** Variable to hold the error message */
 			var message = '';
 
+			/**
+			 * Depending on the value of activeCount they either
+			 * have no accounts at all, or they just don't have any
+			 * active accounts. So to be more friendly we will tailor
+			 * the error message accordingly.
+			 */ 
 			if(activeCount == -1) {
 				message = 'You don\'t have any accounts yet. Please create your frist account under, "Manage Accounts".';
 			} else {
 				message = 'You don\'t have any active accounts. Please create another account or make an existing one active under, "Manage Accounts".';
 			}
 			
-			/** If there aren't elements in the return array */
+			/** Showing the tailored error message */
 			Attention.show( message, {buttons: buttons, onClose: function(){ window.location.href = '../'; } } );
 			
 			/** Hide the spinning wheel */
@@ -229,6 +353,98 @@ function GetAccounts() {
 			
 			/** Stop execution */
 			return;
+		} else { /** End of if(activeCount < 1) */
+			/** There were no errors and at least one active account was found */
+			
+			/** Checking to see if a callback function was provided */
+			if(typeof callback === "function") {
+				/** If it was and it is a function run it */
+				callback();
+			}
+		}
+
+	});
+
+}
+
+
+/**
+ * Function to load the drop down boxes for the
+ * register entry form and reset all values.
+ * 
+ * @param callback funtion to run if provided after success
+ * @returns
+ */
+function SetRegisterForm(callback) {
+	
+	/** Calling the payees php via ajax */
+	$.ajax({
+		url: 'php/register.php',
+		type: 'POST',
+		cache: 'false',
+		data: {
+			doWhat: 'getRegisterFormItems'
+		}
+	})
+	.fail(function(jqXHR, textStatus, errorThrown) {
+		/** Hide the spinning wheel */
+		Wait.hide();
+
+		/** Something odd happend, normally this should never happen. */
+		alert('A system error has occurred, please refresh and try again. If this error persists please report it.');
+	})
+	.done(function(json) {
+		if(json.error) {
+			/** Hide the spinning wheel */
+			Wait.hide();
+
+			/** If there was an error, show it. */
+			Attention.show( json.error, {onClose: (json.loggedOut ? 'Logout' : '' )} );
+			
+			/** Stoping any further execution */
+			return;
+		}
+		
+		/** Reset all the fields */
+		$('#payee_id').html('');
+		$('#category_id').html('');
+		$('#type').val('0');
+		$('#memo').val('');
+		$('#amount').val('');
+		$('#check_num').val('');
+		$( "#date" ).datepicker('setDate', new Date());
+
+		/** Adding the Defaults */
+		$('#payee_id').append(
+			$('<option>').attr('value', -1).text('-- Please Select --'),
+			$('<option>').attr('value', 0).text('{ add New }')
+		);
+
+		/** Adding the Defaults */
+		$('#category_id').append(
+			$('<option>').attr('value', -1).text('-- Please Select --'),
+			$('<option>').attr('value', 0).text('{ add New }')
+		);
+
+		/** Populating the pull downs with the returned data */
+		jQuery.each(json.data.payees, function (id, data) {
+			$('#payee_id').append(
+				$('<option>').attr('value', data.payee_id).text(data.name)
+			);
+		});
+		
+
+		/** Populating the pull downs with the returned data */
+		jQuery.each(json.data.categories, function (id, data) {
+			$('#category_id').append(
+				$('<option>').attr('value', data.category_id).text(data.name)
+			);
+		});
+
+		/** Checking to see if a callback function was provided */
+		if(typeof callback === "function") {
+			/** If it was and it is a function run it */
+			callback();
 		}
 
 	});
@@ -256,11 +472,17 @@ function LoadRegister(account_id) {
 		}
 	})
 	.fail(function(jqXHR, textStatus, errorThrown) {
+		/** Hide the spinning wheel */
+		Wait.hide();
+
 		/** Something odd happend, normally this should never happen. */
 		alert('A system error has occurred, please refresh and try again. If this error persists please report it.');
 	})
 	.done(function(json) {
 //		if(json.error) {
+//			/** Hide the spinning wheel */
+//			Wait.hide();
+//
 //			/** If there was an error, show it. */
 //			Attention.show( json.error, {onClose: (json.loggedOut ? 'Logout' : '' )} );
 //			return;
@@ -289,12 +511,15 @@ function LoadRegister(account_id) {
 //		} /** End of if there were elements in the data array */
 
 		/** Now showing the Register */
-		$('#Register').show();
+		$('#Register').show(function(){
+			/** Trigger a resize event to set the initial height */
+			$(window).trigger('resize');
+		});
 		
 		/** Hide the spinning wheel */
 		Wait.hide();
 		
-	})
+	});
 
 }
 
