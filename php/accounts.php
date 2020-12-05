@@ -75,24 +75,24 @@ function AddUpdate($vars) {
     
     /** Checking to make sure a Nickname was provided */
     if($vars['description'] == "") {
-        $errors->ErrorMsg('Please provided a name for this account');
+        $errors->ErrorMsg(' - Please provided a name for this account');
     }
     
     /**
      * Type should be either Checking or Savings
      */
     if($vars['type'] != 'Checking' && $vars['type'] != 'Savings') {
-        $errors->ErrorMsg('Invalid account type');
+        $errors->ErrorMsg(' - Invalid account type');
     }
 
     /**
      * Account number and ABA can only contain numbers
      */
     if(!preg_match("/^\d+$/", $vars['account_num']) ) {
-        $errors->ErrorMsg('Account number can only contain numbers');
+        $errors->ErrorMsg(' - Account number can only contain numbers');
     }
     if(!preg_match("/^\d+$/", $vars['aba']) ) {
-        $errors->ErrorMsg('Routing number can only contain numbers');
+        $errors->ErrorMsg(' - Routing number can only contain numbers');
     }
 
     /**
@@ -138,7 +138,7 @@ function AddUpdate($vars) {
                      * bad because this shouldn't ever happen in normal
                      * operation.
                      */
-                    $errors->ErrorMsg('Unable to add new account.');
+                    $errors->ErrorMsg(' - Unable to add new account.');
                 }
                 
             }
@@ -153,7 +153,7 @@ function AddUpdate($vars) {
     }
     
     /** Returning data via json */
-    $myReturn->json( array('data' => $data, 'error' => $errors->getString('<br/> - ')) );
+    $myReturn->json( array('data' => $data, 'error' => $errors->getString('<br/>')) );
 }
 
 /**
