@@ -115,8 +115,11 @@ $( document ).ready(function() {
 				Wait.show();
 				
 				/** Reset the Form */
-				SetRegisterForm(function(){
-					/** After SetRegisterForm runs successfully, these items will run */
+				GetRegisterFormFields(function(){
+					/** After GetRegisterFormFields runs successfully, these items will run */
+					
+					/** Reset all the form values to default */
+					ResetForm();
 					
 					/** Once done, hide the waiting icon */
 					Wait.hide();
@@ -138,8 +141,11 @@ $( document ).ready(function() {
 			$('body').show();
 
 			/** Get all the entry form fields */
-			SetRegisterForm(function(){
-				/** After SetRegisterForm runs successfully, these items will run */
+			GetRegisterFormFields(function(){
+				/** After GetRegisterFormFields runs successfully, these items will run */
+
+				/** Reset all the form values to default */
+				ResetForm();
 
 				/** Get all the accounts */
 				GetAccounts();
@@ -167,6 +173,7 @@ function AddCategory() {
 		cache: 'false',
 		data: {
 			doWhat: 'addUpdate',
+			category_id: null,
 			name: $('#category_name').val(),
 			notes: $('#category_notes').val()
 		}
@@ -176,14 +183,33 @@ function AddCategory() {
 		alert('A system error has occurred, please refresh and try again. If this error persists please report it.');
 	})
 	.done(function(json) {
-		/** Hide the spinning wheel */
-		Wait.hide();
-
 		if(json.error) {
+			/** Hide the spinning wheel */
+			Wait.hide();
+
 			/** If there was an error, show it. */
 			Attention.show( json.error, {onClose: (json.loggedOut ? 'Logout' : '' )} );
 		} else {
+			/** Close the dialog box */
 			$('#AddCategory').dialog('close');
+
+			/** Saving what payee was selected */
+			var currentPayeeId = $('#payee_id').val();
+
+			/** Reset the Form */
+			GetRegisterFormFields(function(){
+				/** After GetRegisterFormFields runs successfully, these items will run */
+
+				/** Select the newly inserted value */
+				$('#category_id').val(json.data.lastInsertId);
+				
+				/** Reselect the Payee ID that was selected */
+				$('#payee_id').val(currentPayeeId);
+				
+				/** Once done, hide the waiting icon */
+				Wait.hide();
+			});
+
 		}
 		
 	}); /** End of ajax "done" */
@@ -206,6 +232,7 @@ function AddPayee() {
 		cache: 'false',
 		data: {
 			doWhat: 'addUpdate',
+			payee_id: null,
 			name: $('#payee_name').val(),
 			notes: $('#payee_notes').val()
 		}
@@ -215,14 +242,32 @@ function AddPayee() {
 		alert('A system error has occurred, please refresh and try again. If this error persists please report it.');
 	})
 	.done(function(json) {
-		/** Hide the spinning wheel */
-		Wait.hide();
-
 		if(json.error) {
+			/** Hide the spinning wheel */
+			Wait.hide();
+
 			/** If there was an error, show it. */
 			Attention.show( json.error, {onClose: (json.loggedOut ? 'Logout' : '' )} );
 		} else {
+			/** Close the dialog box */
 			$('#AddPayee').dialog('close');
+			
+			/** Saving what category was selected */
+			var currentCategoryId = $('#category_id').val();
+
+			/** Reset the Form */
+			GetRegisterFormFields(function(){
+				/** After GetRegisterFormFields runs successfully, these items will run */
+
+				/** Select the newly inserted value */
+				$('#payee_id').val(json.data.lastInsertId);
+				
+				/** Reselect the Category ID that was selected */
+				$('#category_id').val(currentCategoryId);
+				
+				/** Once done, hide the waiting icon */
+				Wait.hide();
+			});
 		}
 		
 	}); /** End of ajax "done" */
@@ -274,14 +319,17 @@ function AddUpdateRegisterEntry(account_entries_id) {
 
 		} else {
 			/** If there was no errors, Show success message */
-			Attention.show('Entry added/updated successfully.', {type: 'info', onClose: function(){
+			Attention.show('Entry added/updated successfully.', {type: 'info', onClose: function() {
 				/** Show the spinning wheel */
 				Wait.show();
 				
 				/** Reset the register entry form */
-				SetRegisterForm(function(){
-					/** After SetRegisterForm runs successfully, these items will run */
+				GetRegisterFormFields(function(){
+					/** After GetRegisterFormFields runs successfully, these items will run */
 					
+					/** Reset all the form values to default */
+					ResetForm();
+
 					/** Reload the Register */
 					LoadRegister($('#account_id').val());
 				});
@@ -476,7 +524,7 @@ function GetAccounts(callback) {
  * @param callback funtion to run if provided after success
  * @returns
  */
-function SetRegisterForm(callback) {
+function GetRegisterFormFields(callback) {
 	
 	/** Calling the payees php via ajax */
 	$.ajax({
@@ -509,12 +557,6 @@ function SetRegisterForm(callback) {
 		/** Reset all the fields */
 		$('#payee_id').html('');
 		$('#category_id').html('');
-		$('#type').val('0');
-		$('#memo').val('');
-		$('#amount').val('');
-		$('#check_num').val('');
-		$( "#date" ).datepicker('setDate', new Date());
-		$('#addRegisterItem').text('Enter').data('account_entries_id', null)
 
 		/** Adding the Defaults */
 		$('#payee_id').append(
@@ -534,7 +576,6 @@ function SetRegisterForm(callback) {
 				$('<option>').attr('value', data.payee_id).text(data.name)
 			);
 		});
-		
 
 		/** Populating the pull downs with the returned data */
 		jQuery.each(json.data.categories, function (id, data) {
@@ -553,6 +594,19 @@ function SetRegisterForm(callback) {
 
 }
 
+/**
+ * Function to reset the form vaules to defaults
+ * 
+ * @returns void
+ */
+function ResetForm() {
+	$('#type').val('0');
+	$('#memo').val('');
+	$('#amount').val('');
+	$('#check_num').val('');
+	$( "#date" ).datepicker('setDate', new Date());
+	$('#addRegisterItem').text('Enter').data('account_entries_id', null)
+}
 
 /**
  * Function to retrieve all the account
