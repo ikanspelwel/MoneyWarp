@@ -76,10 +76,15 @@ MyAttention.prototype.show = function (contents, options) {
 	/** Adding the button(s) */
 	$('#'+ this.name).dialog( "option", "buttons", (options.buttons ? options.buttons : { "Close": function() { $(this).dialog('close'); } } ) );
 
+	/** Removing any previously attached dialogclose events. */
+	$('#'+ this.name).off( "dialogclose" );
+
+	/** Removing any previously attached dialogbeforeclose events */ 
+	$('#'+ this.name).off( "dialogbeforeclose" );
+	
 	/** Binding onClose function */
 	if(typeof options.onClose === "function") {
 		$('#'+ this.name).on( "dialogclose", function( event, ui ) {
-			$('#'+ this.name).off( "dialogclose" );
 			options.onClose();
 		});
 	} else if(options.onClose == 'Logout') {
@@ -96,12 +101,6 @@ MyAttention.prototype.show = function (contents, options) {
 		$('#'+ this.name).on( "dialogbeforeclose", function() {
 			return false;
 		});
-	} else {
-		/** Remove any attached events. */
-		$('#'+ this.name).off( "dialogclose" );
-
-		/** Allow the dialog box to be closed. */ 
-		$('#'+ this.name).off( "dialogbeforeclose" );
 	}
 
 	/** Displaying the Dialog box */
