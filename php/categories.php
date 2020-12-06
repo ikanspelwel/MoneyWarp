@@ -106,6 +106,9 @@ function AddUpdate($vars) {
                 /** Execute Statement */
                 $addItem->execute( array(':user_id' => $_SESSION['user_id'], ':name' => $vars['name'], ':notes' => $vars['notes']) );
 
+                /** Store the last inserted ID */
+                $data['lastInsertId'] = $db->get_dbh()->lastInsertId();
+                
                 /** Checking for affected rows */
                 if($addItem->rowCount() != 1) {
                     /**
