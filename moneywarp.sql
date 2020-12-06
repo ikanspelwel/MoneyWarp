@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 15, 2020 at 12:50 PM
--- Server version: 5.5.65-MariaDB
+-- Generation Time: Dec 06, 2020 at 04:44 PM
+-- Server version: 5.5.68-MariaDB
 -- PHP Version: 5.4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -45,11 +45,11 @@ CREATE TABLE IF NOT EXISTS `account` (
 --
 
 CREATE TABLE IF NOT EXISTS `account_entries` (
-  `account_entries_id` int(10) unsigned NOT NULL,
+  `account_entries_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `account_id` int(10) unsigned NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `date` date NOT NULL,
-  `reconciled` int(1) NOT NULL,
+  `reconciled` int(1) NOT NULL DEFAULT '0',
   `type` enum('Deposit','Withdrawal','Transfer') COLLATE utf8_unicode_ci NOT NULL,
   `check_num` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
   `payee_id` int(10) unsigned NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `account_entries` (
   KEY `category_id` (`category_id`),
   KEY `amount` (`amount`),
   KEY `reconciled` (`reconciled`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
