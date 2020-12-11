@@ -4,7 +4,7 @@
  * for dispalying the attention box.
  */
 function MyAttention(name) {
-	// Storing the ID name for this class
+	/** Storing the ID name for this class */
 	this.name = name;
 	
 	/**
@@ -26,7 +26,7 @@ function MyAttention(name) {
 	$('#'+ this.name).dialog({
 		autoOpen : false,
 		modal : true
-	}); // end of new dialog box
+	}); /** end of new dialog box */
 
 }
 
