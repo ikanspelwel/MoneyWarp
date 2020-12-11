@@ -27,7 +27,7 @@ MySessions.prototype.GetStatus = function (sucessCallback, failCallback) {
 			/** If this function exists call it with the return ajax vars */
 			failCallback( jqXHR, textStatus, errorThrown );
 		} else {
-			/** If there wasn't a functoin provided just show a standard error */
+			/** If there wasn't a function provided just show a standard error */
 			alert('A system error has occurred, please refresh and try again. If this error persists please report it.');
 		}
 	})
@@ -48,7 +48,7 @@ MySessions.prototype.LogOut = function () {
 		}
 	})
 	.fail(function(jqXHR, textStatus, errorThrown) {
-		/** If there wasn't a functoin provided just show a standard error */
+		/** If there wasn't a function provided just show a standard error */
 		alert('A system error has occurred, please refresh and try again. If this error persists please report it.');
 	});
 }
