@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 06, 2020 at 04:44 PM
+-- Generation Time: Dec 12, 2020 at 08:58 PM
 -- Server version: 5.5.68-MariaDB
 -- PHP Version: 5.4.16
 
@@ -152,15 +152,15 @@ CREATE TABLE IF NOT EXISTS `warp_entry` (
 -- Constraints for table `account`
 --
 ALTER TABLE `account`
-  ADD CONSTRAINT `account_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `account_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `account_entries`
 --
 ALTER TABLE `account_entries`
+  ADD CONSTRAINT `account_entries_ibfk_3` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `account_entries_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `account_entries_ibfk_2` FOREIGN KEY (`payee_id`) REFERENCES `payee` (`payee_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `account_entries_ibfk_3` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `account_entries_ibfk_2` FOREIGN KEY (`payee_id`) REFERENCES `payee` (`payee_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `category`
@@ -185,9 +185,9 @@ ALTER TABLE `payee`
 -- Constraints for table `warp_entry`
 --
 ALTER TABLE `warp_entry`
+  ADD CONSTRAINT `warp_entry_ibfk_3` FOREIGN KEY (`payee_id`) REFERENCES `payee` (`payee_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `warp_entry_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `warp_entry_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`),
-  ADD CONSTRAINT `warp_entry_ibfk_3` FOREIGN KEY (`payee_id`) REFERENCES `payee` (`payee_id`);
+  ADD CONSTRAINT `warp_entry_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
